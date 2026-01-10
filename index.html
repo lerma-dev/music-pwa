@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Músic</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#3d1409">
+    <!-- WEB -->
+    <link rel="icon" type="image/ico" href="assets/icons/favicon.ico">
+    <!-- IOS -->
+    <link rel="apple-touch-icon" href="assets/icons/icon-180.png">
+    <meta name="apple-mobile-web-app-title" content="Music">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#3d1409">
+
+    <link rel="apple-touch-startup-image" 
+        media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)" 
+        href="assets/icons/apple-splash-1290-2796.png">
+
+    <link rel="apple-touch-startup-image" 
+        media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)" 
+        href="assets/icons/apple-splash-1179-2556.png">
+
+    <link rel="apple-touch-startup-image" 
+        media="screen and (device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3)" 
+        href="assets/icons/apple-splash-1284-2778.png">
+
+    <link rel="apple-touch-startup-image" 
+        media="screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)" 
+        href="assets/icons/apple-splash-1170-2532.png">
+</head>
+<body>
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+        <div class="spinner"></div>
+        <p>Indexando canciones...</p>
+    </div>
+
+    <section id="view-main">
+        <header class="main-header">
+            <div class="brand-container">
+                <div class="brand-text">
+                    <h1>Mi Música</h1>
+                    <p>Biblioteca de Carpetas</p>
+                </div>
+            </div>
+            <button id="clear-db-btn" class="clear-btn" title="Eliminar todo">
+                <ion-icon name="trash-outline"></ion-icon>
+            </button>
+        </header>
+        
+        <main class="content">
+            <div class="import-section">
+                <input type="file" id="folder-input" webkitdirectory directory multiple hidden>
+                <label for="folder-input" class="main-import-card">
+                    <div class="import-icon">
+                        <ion-icon name="folder-open"></ion-icon>
+                    </div>
+                    <div class="import-info">
+                        <strong>Agregar Música</strong>
+                        <p>Seleccionar carpetas locales</p>
+                    </div>
+                </label>
+            </div>
+            
+            <div class="section-divider">
+                <span>Carpetas detectadas</span>
+                <div class="line"></div>
+            </div>
+
+            <div id="detected-folders" class="folder-grid">
+            </div>
+        </main>
+    </section>
+
+    <section id="view-detail" style="display: none;">
+        <header class="detail-header">
+            <div class="header-content">
+                <button class="back-circle-btn" onclick="showMainView()">
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                </button>
+                <div class="header-info">
+                    <p class="label">Carpeta seleccionada</p>
+                    <h1 id="current-folder-title">Carpeta</h1>
+                </div>
+            </div>
+            <div class="header-bg-blob"></div>
+        </header>
+
+        <main class="content list-container">
+            <div class="list-stats" id="folder-stats-info">Playlist • Local</div>
+            <div class="search-container">
+                <ion-icon name="search-outline"></ion-icon>
+                <input type="text" id="song-search" placeholder="Buscar en esta carpeta...">
+            </div>
+            <ul id="song-list" class="song-list"></ul>
+        </main>
+    </section>
+
+    <section id="view-player-full" class="full-player">
+        <button class="close-full" onclick="hideFullPlayer()">
+            <ion-icon name="chevron-down-outline"></ion-icon>
+        </button>
+        <div class="full-content">
+            <div class="full-album-art" id="album-art-container">
+                <ion-icon id="default-icon" name="musical-notes"></ion-icon>
+                <canvas id="visualizer"></canvas>
+            </div>
+            <div class="full-info">
+                <div class="marquee-container">
+                    <h2 id="full-track-name" class="marquee-text">Sin reproducir</h2>
+                </div>
+                <strong id="full-artist-name"></strong>
+            </div>
+            <div class="full-progress">
+                <div class="progress-container" id="full-progress-container">
+                    <div id="full-progress-bar" class="progress-bar">
+                        <div class="progress-thumb"></div>
+                    </div>
+                </div>
+                <div class="time-labels">
+                    <span id="current-time">0:00</span>
+                    <span id="total-time">0:00</span>
+                </div>
+            </div>
+            <div class="full-controls">
+                <button id="full-prev-btn">
+                    <ion-icon name="play-back"></ion-icon>
+                </button>
+                <button id="full-play-btn" class="main-play">
+                    <ion-icon id="full-play-icon" name="play"></ion-icon>
+                </button>
+                <button id="full-next-btn">
+                    <ion-icon name="play-forward"></ion-icon>
+                </button>
+            </div>
+            <div class="extra-controls">
+                <button id="mode-btn">
+                    <ion-icon name="repeat"></ion-icon>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="mini-player" onclick="showFullPlayer()">
+        <div class="progress-container" id="progress-container">
+            <div id="progress-bar" class="progress-bar"></div>
+        </div>
+        <div class="player-flex">
+            <div class="album-art-mini">
+                <ion-icon name="musical-notes"></ion-icon>
+            </div>
+            <div class="track-info">
+                <div class="marquee-container">
+                    <strong id="track-name" class="marquee-text">Sin reproducir</strong>
+                </div>
+                <strong id="artist-name"></strong>
+            </div>
+            <div class="controls" onclick="event.stopPropagation()">
+                <button id="play-btn">
+                    <ion-icon id="play-icon" name="play"></ion-icon>
+                </button>
+                <button id="next-btn">
+                    <ion-icon name="play-forward"></ion-icon>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <audio id="audio-engine"></audio>
+
+    <!-- javascripts -->
+    <script src="scripts/app.js"></script>
+    <!-- Service Worker -->
+    <script>
+        if('serviceWorker' in navigator){
+            navigator.serviceWorker.register('./sw.js')
+            .then(() => {
+                console.log('Service Worker registrado correctamente.');
+            })
+            .catch(err => {
+                console.log('Error al registrar el Service Worker:', err);
+            });
+        }
+    </script>
+    <!-- Ionic Framework -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html>
