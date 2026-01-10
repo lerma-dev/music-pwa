@@ -263,11 +263,6 @@ function playSong(i) {
         navigator.mediaSession.setActionHandler('nexttrack', playNext);
         navigator.mediaSession.setActionHandler('play', togglePlay);
         navigator.mediaSession.setActionHandler('pause', togglePlay);
-        if (audio.paused) {
-            navigator.mediaSession.playbackState = "paused";
-        } else {
-            navigator.mediaSession.playbackState = "playing";
-        }
     }
     updatePlayButtons(true);
 }
