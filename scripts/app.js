@@ -322,13 +322,6 @@ function escapeJS(str) {
 function togglePlay() {
     if (!audio.src) return;
     audio.paused ? audio.play() : audio.pause();
-    if (audio.paused) {
-        audio.play();
-        if ('mediaSession' in navigator) navigator.mediaSession.playbackState = "playing";
-    } else {
-        audio.pause();
-        if ('mediaSession' in navigator) navigator.mediaSession.playbackState = "paused";
-    }
     updatePlayButtons(!audio.paused);
 }
 
@@ -457,13 +450,18 @@ function hideFullPlayer() {
     document.body.style.overflow = 'auto';
 }
 
-playBtn.onclick = (e) => { e.stopPropagation(); togglePlay(); };
-fullPlayBtn.onclick = togglePlay;
+playBtn.onclick = (e) => { 
+    e.stopPropagation(); 
+    togglePlay(); 
+};
+
+fullPlayBtn.onclick = togglePlay();
 
 nextBtn.onclick = (e) => { e.stopPropagation(); playNext(); };
 fullNextBtn.onclick = playNext;
 fullPrevBtn.onclick = playPrev;
 audio.onended = playNext;
+
 modeBtn.onclick = () => {
     playMode = (playMode === 'list') ? 'shuffle' : 'list';
     modeBtn.querySelector('ion-icon').setAttribute('name', playMode === 'list' ? 'repeat' : 'shuffle');
