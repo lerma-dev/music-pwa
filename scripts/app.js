@@ -263,10 +263,6 @@ function playSong(i) {
         navigator.mediaSession.setActionHandler('nexttrack', playNext);
         navigator.mediaSession.setActionHandler('play', togglePlay);
         navigator.mediaSession.setActionHandler('pause', togglePlay);
-        navigator.mediaSession.setActionHandler('favorite', () => {
-            const currentFolderName = document.getElementById('current-folder-title').textContent;
-            toggleFavorite(currentFolderName, song.title, new Event('click'));
-        });
         if (audio.paused) {
             navigator.mediaSession.playbackState = "paused";
         } else {
