@@ -263,8 +263,19 @@ function playSong(i) {
         navigator.mediaSession.setActionHandler('nexttrack', playNext);
         navigator.mediaSession.setActionHandler('play', togglePlay);
         navigator.mediaSession.setActionHandler('pause', togglePlay);
+        navigator.mediaSession.playbackState = "playing";
     }
     updatePlayButtons(true);
+}
+
+audio.onloadedmetadata = () => {
+    if ('mediaSession' in navigator) {
+        navigator.mediaSession.setPositionState({
+            duration: audio.duration,
+            playbackRate: audio.playbackRate,
+            position: audio.currentTime
+        });
+    }
 }
 
 // --- LÓGICA DE LA BARRA DE PROGRESO ---
@@ -311,6 +322,13 @@ function escapeJS(str) {
 function togglePlay() {
     if (!audio.src) return;
     audio.paused ? audio.play() : audio.pause();
+    if (audio.paused) {
+        audio.play();
+        if ('mediaSession' in navigator) navigator.mediaSession.playbackState = "playing";
+    } else {
+        audio.pause();
+        if ('mediaSession' in navigator) navigator.mediaSession.playbackState = "paused";
+    }
     updatePlayButtons(!audio.paused);
 }
 
