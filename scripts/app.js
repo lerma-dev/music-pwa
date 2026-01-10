@@ -263,7 +263,15 @@ function playSong(i) {
         navigator.mediaSession.setActionHandler('nexttrack', playNext);
         navigator.mediaSession.setActionHandler('play', togglePlay);
         navigator.mediaSession.setActionHandler('pause', togglePlay);
-        navigator.mediaSession.playbackState = "playing";
+        navigator.mediaSession.setActionHandler('favorite', () => {
+            const currentFolderName = document.getElementById('current-folder-title').textContent;
+            toggleFavorite(currentFolderName, song.title, new Event('click'));
+        });
+        if (audio.paused) {
+            navigator.mediaSession.playbackState = "paused";
+        } else {
+            navigator.mediaSession.playbackState = "playing";
+        }
     }
     updatePlayButtons(true);
 }
@@ -455,14 +463,17 @@ playBtn.onclick = (e) => {
     togglePlay(); 
 };
 
-fullPlayBtn.onclick = togglePlay();
-
-nextBtn.onclick = (e) => { e.stopPropagation(); playNext(); };
-fullNextBtn.onclick = playNext;
-fullPrevBtn.onclick = playPrev;
-audio.onended = playNext;
+nextBtn.onclick = (e) => { 
+    e.stopPropagation(); 
+    playNext(); 
+};
 
 modeBtn.onclick = () => {
     playMode = (playMode === 'list') ? 'shuffle' : 'list';
     modeBtn.querySelector('ion-icon').setAttribute('name', playMode === 'list' ? 'repeat' : 'shuffle');
 };
+
+fullNextBtn.onclick = playNext;
+fullPlayBtn.onclick = togglePlay;
+fullPrevBtn.onclick = playPrev;
+audio.onended = playNext;
