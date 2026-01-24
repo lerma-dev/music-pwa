@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Músic</title>
     <link rel="stylesheet" href="styles/style.css">
+    <!-- PWA -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#3d1409">
-    <!-- WEB -->
     <link rel="icon" type="image/ico" href="assets/icons/favicon.ico">
-    <!-- IOS -->
     <link rel="apple-touch-icon" href="assets/icons/icon-180.png">
     <meta name="apple-mobile-web-app-title" content="Music">
     <meta name="mobile-web-app-capable" content="yes">
@@ -37,25 +36,29 @@
         <p>Indexando canciones...</p>
     </div>
 
-    <section id="view-main">
+    <section id="view-main" style="display: block;">
         <header class="main-header">
-            <div class="brand-container">
-                <div class="brand-text">
-                    <h1>Mi Música</h1>
-                    <p>Biblioteca de Carpetas</p>
-                </div>
+            <div class="brand-text">
+                <h1>Mi Música</h1>
             </div>
-            <button id="clear-db-btn" class="clear-btn" title="Eliminar todo">
-                <ion-icon name="trash-outline"></ion-icon>
-            </button>
+            <div class="brand-container">
+                <button class="open-songs-favs"  onclick="showFavoritesView()" title="Favoritos">
+                    <l-icon name="heart"></l-icon>
+                </button>
+                <button class="create-playlist" onclick="showPlaylistsView()" title="Playlists">
+                    <l-icon name="albums"></l-icon>
+                </button>
+                <button id="clear-db-btn" class="clear-btn" title="Eliminar todo">
+                    <l-icon name="trash"></l-icon>
+                </button>
+            </div>
         </header>
-        
         <main class="content">
             <div class="import-section">
                 <input type="file" id="folder-input" webkitdirectory directory multiple hidden>
                 <label for="folder-input" class="main-import-card">
                     <div class="import-icon">
-                        <ion-icon name="folder-open"></ion-icon>
+                        <l-icon name="folder-open"></l-icon>
                     </div>
                     <div class="import-info">
                         <strong>Agregar Música</strong>
@@ -63,14 +66,82 @@
                     </div>
                 </label>
             </div>
-            
+
             <div class="section-divider">
                 <span>Carpetas detectadas</span>
                 <div class="line"></div>
             </div>
 
-            <div id="detected-folders" class="folder-grid">
+            <div id="detected-folders" class="folder-grid"></div>
+        </main>
+    </section> 
+
+    <section id="view-playlist" style="display: none;">
+        <header class="detail-header">
+            <div class="header-content">
+                <button class="back-circle-btn" onclick="showMainView()">
+                    <l-icon name="arrow-back-outline"></l-icon>
+                </button>
+                <div class="header-info">
+                    <h1>Playlists</h1>
+                </div>
             </div>
+            <div class="header-bg-blob"></div>
+        </header>
+        <main class="content">
+            <div class="main-import-card">
+                <div class="import-icon">
+                    <l-icon name="add-outline"></l-icon>
+                </div>
+                <input type="button" id="add-playlist" hidden>
+                <label for="add-playlist" class="import-info">
+                    <strong>Agregar nuevo</strong>
+                </label>
+            </div>
+            <div class="section-divider">
+                <span>Playlists creadas</span>
+                <div class="line"></div>
+            </div>
+
+            <div id="created-playlists" class="folder-grid"></div>
+        </main>
+    </section>
+
+    <!-- Modal -->
+    <div id="playlist-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal();">&times;</span>
+            <h2>Crear nueva Playlist</h2>
+            <input type="text" id="playlist-name" placeholder="Nombre de la playlist">
+            <button id="save-playlist" onclick="Btn_savePlaylist();">Guardar</button>
+            
+            <div id="existing-playlists-container">
+                <h3>Guardar en Playlist</h3>
+            </div>
+        </div>
+    </div>
+
+    <section id="view-songs-favs" style="display: none;">
+        <header class="detail-header">
+            <div class="header-content">
+                <button class="back-circle-btn" onclick="showMainView()">
+                    <l-icon name="arrow-back-outline"></l-icon>
+                </button>
+                <div class="header-info">
+                    <h1>Canciones Favoritas</h1>
+                </div>
+            </div>
+            <div class="header-bg-blob"></div>
+        </header>
+
+        <main class="content list-container">
+            <div class="list-stats" id="favs-stats-info">Playlist • Favoritos</div>
+            <div class="search-container">
+                <l-icon name="search-outline"></l-icon>
+                <input type="text" placeholder="Buscar en favoritos..."
+                    class="search-song" id="favs-song-search">
+            </div>
+            <ul id="favs-song-list" class="song-list"></ul>
         </main>
     </section>
 
@@ -78,7 +149,7 @@
         <header class="detail-header">
             <div class="header-content">
                 <button class="back-circle-btn" onclick="showMainView()">
-                    <ion-icon name="arrow-back-outline"></ion-icon>
+                    <l-icon name="arrow-back-outline"></l-icon>
                 </button>
                 <div class="header-info">
                     <p class="label">Carpeta seleccionada</p>
@@ -91,20 +162,23 @@
         <main class="content list-container">
             <div class="list-stats" id="folder-stats-info">Playlist • Local</div>
             <div class="search-container">
-                <ion-icon name="search-outline"></ion-icon>
-                <input type="text" id="song-search" placeholder="Buscar en esta carpeta...">
+                <l-icon name="search-outline"></l-icon>
+                <input 
+                    id="song-search"
+                    type="text"
+                    placeholder="Buscar en esta carpeta..." >
             </div>
             <ul id="song-list" class="song-list"></ul>
         </main>
     </section>
 
-    <section id="view-player-full" class="full-player">
+    <section id="view-player-full" class="full-player" >
         <button class="close-full" onclick="hideFullPlayer()">
-            <ion-icon name="chevron-down-outline"></ion-icon>
+            <l-icon name="chevron-down"></l-icon>
         </button>
         <div class="full-content">
             <div class="full-album-art" id="album-art-container">
-                <ion-icon id="default-icon" name="musical-notes"></ion-icon>
+                <l-icon id="default-icon" name="musical-notes"></l-icon>
                 <canvas id="visualizer"></canvas>
             </div>
             <div class="full-info">
@@ -126,30 +200,33 @@
             </div>
             <div class="full-controls">
                 <button id="full-prev-btn">
-                    <ion-icon name="play-back"></ion-icon>
+                    <l-icon name="play-back"></l-icon>
                 </button>
                 <button id="full-play-btn" class="main-play">
-                    <ion-icon id="full-play-icon" name="play"></ion-icon>
+                    <l-icon id="full-play-icon" name="play"></l-icon>
                 </button>
                 <button id="full-next-btn">
-                    <ion-icon name="play-forward"></ion-icon>
+                    <l-icon name="play-forward"></l-icon>
                 </button>
             </div>
             <div class="extra-controls">
-                <button id="mode-btn">
-                    <ion-icon name="repeat"></ion-icon>
+                <button class="mode-btn" onclick=" playMode='list' ">
+                    <l-icon name="repeat"></l-icon>
+                </button>
+                <button class="mode-btn" onclick=" playMode='shuffle' ">
+                    <l-icon name="shuffle"></l-icon>
                 </button>
             </div>
         </div>
     </section>
 
-    <footer class="mini-player" onclick="showFullPlayer()">
+    <section class="mini-player" onclick="showFullPlayer()" >
         <div class="progress-container" id="progress-container">
             <div id="progress-bar" class="progress-bar"></div>
         </div>
         <div class="player-flex">
             <div class="album-art-mini">
-                <ion-icon name="musical-notes"></ion-icon>
+                <l-icon name="musical-notes"></l-icon>
             </div>
             <div class="track-info">
                 <div class="marquee-container">
@@ -159,33 +236,33 @@
             </div>
             <div class="controls" onclick="event.stopPropagation()">
                 <button id="play-btn">
-                    <ion-icon id="play-icon" name="play"></ion-icon>
+                    <l-icon id="play-icon" name="play"></l-icon>
                 </button>
                 <button id="next-btn">
-                    <ion-icon name="play-forward"></ion-icon>
+                    <l-icon name="play-forward"></l-icon>
                 </button>
             </div>
         </div>
-    </footer>
-
+    </section>
+    
     <audio id="audio-engine"></audio>
 
     <!-- javascripts -->
     <script src="scripts/app.js"></script>
+    <script src="scripts/LermaIcon.js"></script>
     <!-- Service Worker -->
     <script>
         if('serviceWorker' in navigator){
-            navigator.serviceWorker.register('./sw.js')
-            .then(() => {
-                console.log('Service Worker registrado correctamente.');
-            })
-            .catch(err => {
-                console.log('Error al registrar el Service Worker:', err);
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registrado con éxito:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Registro de Service Worker fallido:', error);
+                    });
             });
         }
     </script>
-    <!-- Ionic Framework -->
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 </html>

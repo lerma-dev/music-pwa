@@ -1,11 +1,18 @@
 /* --- VARIABLES Y BASE --- */
 :root {
-  --bg: #000000;
+  --bg: #000;
   --card-bg: #1a1a1a;
   --player-bg: #3d1409;
   --text: #ffffff;
   --text-dim: #999;
   --accent: #f0c9a5;
+}
+
+/*  ESTILOS GENERALES  */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -16,44 +23,116 @@ body {
   overflow-x: hidden;
 }
 
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+l-icon {
+  color: var(--accent);
+  display: block;
+}
+
 /* --- ESTILOS PANTALLA PRINCIPAL --- */
 .main-header {
   display: flex;
   justify-content: space-between;
-  padding: 30px 20px;
+  padding: 20px 20px;
   background: linear-gradient(to bottom, #1a1a1a, var(--bg));
 }
 
-.main-header h1 {
+.brand-text {
+  display: flex;
+  align-items: center;
+}
+
+.brand-text h1 {
   margin: 0;
-  font-size: 1.8rem;
+  text-align: right;
+  font-size: 1.5rem;
   letter-spacing: -0.5px;
 }
 
-.main-header p {
-  margin: 0;
-  font-size: 0.85rem;
-  color: var(--accent);
-  opacity: 0.7;
+.brand-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
-.clear-btn {
-  background: rgba(255, 0, 0, 0.1);
-  border: 1px solid rgba(255, 0, 0, 0.2);
-  color: #ff5f5f;
-  padding: 15px;
+.open-songs-favs {
+  color: #ff453a;
+  padding: 10px;
   border-radius: 12px;
   transition: all 0.2s;
 }
 
-.clear-btn:active {
+.open-songs-favs:active {
+  background: #050404;
+  color: white;
+  transform: scale(0.9);
+}
+
+.open-songs-favs:hover {
   background: #ff5f5f;
   color: white;
   transform: scale(0.9);
 }
 
-.clear-btn ion-icon {
-  color: inherit; /* Hereda el color rojo del botón */
+.open-songs-favs l-icon {
+  color: inherit;
+  font-size: 1.5rem;
+}
+
+.create-playlist {
+  color: var(--accent);
+  padding: 10px;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+
+.create-playlist:active {
+  background: #459752;
+  color: white;
+  transform: scale(0.9);
+}
+
+.create-playlist:hover {
+  background: #459752;
+  color: white;
+  transform: scale(0.9);
+}
+
+.create-playlist l-icon {
+  color: inherit;
+  font-size: 1.5rem;
+}
+
+.clear-btn {
+  color: var(--accent);
+  padding: 10px;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+
+.clear-btn:active {
+  background: #ff453a;
+  color: white;
+  transform: scale(0.9);
+}
+
+.clear-btn:hover {
+  background: #ff453a;
+  color: white;
+  transform: scale(0.9);
+}
+
+.clear-btn l-icon {
+  color: inherit;
   font-size: 1.5rem;
 }
 
@@ -65,7 +144,7 @@ body {
   padding: 20px;
   border-radius: 20px;
   cursor: pointer;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -77,7 +156,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.4rem;
+  font-size: 2rem;
 }
 
 .section-divider {
@@ -217,10 +296,16 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 12px 15px;
-  margin: 8px 15px; /* Más margen entre tarjetas */
-  background: #111111; /* Fondo oscuro sólido como la imagen */
+  margin: 8px 15px;
+  background: #101010;
   border-radius: 15px;
   border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.song-artist {
+  display: block;
+  font-size: 0.8em;
+  opacity: 0.5;
 }
 
 .song-info-container {
@@ -228,7 +313,7 @@ body {
   align-items: center;
   gap: 12px;
   flex: 1;
-  overflow: hidden; /* Importante para que el marquee no se salga */
+  overflow: hidden;
 }
 
 .album-art-placeholder {
@@ -266,11 +351,19 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 40px 20px;
+  padding: 5px 20px;
   height: 80vh;
 }
 
-/* Contenedores de botones de música */
+.main-play l-icon {
+  font-size: 5rem;
+}
+
+.controls button l-icon,
+.full-controls button l-icon {
+  font-size: 2rem;
+}
+
 .full-controls {
   display: flex;
   align-items: center;
@@ -278,21 +371,13 @@ body {
   width: 100%;
 }
 
-/* El botón circular de Play */
-/* Botón principal (Play) */
-.main-play {
-  background: #fff;
-  color: #000;
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
+.extra-controls {
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 2.2rem;
+  justify-content: space-around;
+  width: 100%;
 }
 
-/* Iconos laterales (Prev/Next) */
 #full-prev-btn,
 #full-next-btn {
   background: none;
@@ -302,24 +387,19 @@ body {
   cursor: pointer;
 }
 
-/* NUEVA SECCIÓN: El botón de modo abajo */
-.extra-controls {
-  width: 100%;
-  display: flex;
-  justify-content: right;
-}
-
-#mode-btn {
+.mode-btn {
   background: none;
-  border: none;
+  border: 50%;
   color: var(--accent);
-  font-size: 1.8rem; /* Tamaño visible */
-  padding: 10px;
+  font-size: 2.5rem;
   cursor: pointer;
   opacity: 0.8;
 }
 
-#mode-btn:active {
+.mode-btn l-icon:hover {
+  background: var(--accent);
+  color: var(--player-bg);
+  border-radius: 50%;
   opacity: 1;
   transform: scale(1.1);
 }
@@ -361,12 +441,17 @@ body {
   justify-content: center;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+#default-icon {
+  position: relative;
+  font-size: 10rem;
+  z-index: 2;
 }
 
 #visualizer {
-  display: none; /* Se activa por JS */
-  position: absolute; /* Se pega a los bordes del recuadro padre */
+  display: none;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -374,18 +459,20 @@ body {
   z-index: 1;
 }
 
-#default-icon {
-  position: relative;
-  z-index: 2; /* Mantiene el icono por encima si es necesario */
-}
-
 .full-info {
   width: 100%;
   text-align: center;
 }
+
 .full-info h2 {
-  margin: 0;
+  margin-bottom: 5px;
   font-size: 1.6rem;
+}
+
+#full-artist-name {
+  color: var(--text-dim);
+  font-size: 1rem;
+  margin-top: 5px;
 }
 
 .full-controls {
@@ -394,12 +481,14 @@ body {
   justify-content: space-around;
   align-items: center;
 }
+
 .full-controls button {
   background: none;
   border: none;
   color: var(--accent);
   font-size: 2.2rem;
 }
+
 .main-play {
   font-size: 4rem !important;
 }
@@ -413,11 +502,11 @@ body {
   width: 100%;
   height: 6px;
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
+  border-radius: 50px;
   cursor: pointer;
   position: relative;
   display: flex;
-  align-items: center; /* Centra el progreso y el círculo verticalmente */
+  align-items: center; /* Centrar el thumb verticalmente */
 }
 
 #full-progress-bar {
@@ -442,22 +531,21 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-/* circulo Thumb */
 .progress-thumb {
   position: absolute;
   right: -8px;
   top: 50%;
   transform: translateY(-50%);
-  width: 16px;
+  width: 10px;
   height: 16px;
-  background: #000000;
+  background: #000;
   border-radius: 50%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 10px rgba(0, 0, 0);
 }
 
 /* --- MINI REPRODUCTOR --- */
 .list-container {
-  padding-bottom: 120px; /* Espacio extra para que la última canción suba más que el mini-player */
+  padding-bottom: 120px;
 }
 
 .mini-player {
@@ -465,20 +553,21 @@ body {
   bottom: 0;
   width: 100%;
   background: var(--player-bg);
-  padding: 10px 0 30px 0;
-  border-radius: 25px 25px 0 0;
-  z-index: 9999; /* Valor muy alto para estar siempre al frente */
-  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.5); /* Sombra para separar de la lista */
+  padding: 5px 0 5px 0;
+  border-radius: 10px 10px 0 0;
+  z-index: 9999;
+  box-shadow: 0 -5px 20px rgba(255, 255, 255, 0.1);
 }
 
 .progress-container {
-  width: 90%;
+  width: 95%;
   height: 4px;
   background: rgba(255, 255, 255, 0.1);
-  margin: 0 auto 12px;
+  margin: 0 auto 10px;
   border-radius: 2px;
   overflow: hidden;
 }
+
 .progress-bar {
   height: 100%;
   background: var(--accent);
@@ -489,14 +578,15 @@ body {
 .player-flex {
   display: flex;
   align-items: center;
-  padding: 0 25px;
+  padding: 0 15px;
   gap: 15px;
 }
+
 .album-art-mini {
-  width: 45px;
-  height: 45px;
+  width: 40px;
+  height: 40px;
   background: #222;
-  border-radius: 8px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -506,20 +596,27 @@ body {
   flex: 1;
   overflow: hidden;
 }
+
 .track-info strong {
   font-size: 0.9rem;
   white-space: nowrap;
+}
+
+#artist-name {
+  font-size: 0.75rem;
+  color: var(--text-dim);
 }
 
 .controls {
   display: flex;
   gap: 15px;
 }
+
 .controls button {
   background: none;
   border: none;
   color: var(--accent);
-  font-size: 1.8rem;
+  font-size: 2rem;
 }
 
 /* --- EFECTO MARQUEE --- */
@@ -534,13 +631,13 @@ body {
 
   .marquee-text {
     display: inline-block;
-    padding-left: 0; /* Empieza desde la izquierda */
+    padding-left: 0;
     transition: transform 0.1s linear;
   }
 
   .animate-marquee {
     animation: marquee 8s linear infinite;
-    padding-left: 10%; /* Pequeño margen para que no empiece pegado */
+    padding-left: 10%;
   }
 
   @keyframes marquee {
@@ -549,7 +646,7 @@ body {
     }
     10% {
       transform: translateX(0);
-    } /* Pausa para leer al inicio */
+    }
     100% {
       transform: translateX(-100%);
     }
@@ -589,34 +686,6 @@ body {
   }
 }
 
-/*!Estilo general para todos los iconos de Ionic */
-ion-icon {
-  color: var(--accent);
-  display: block;
-}
-
-/* Tamaño para botones normales (Mini player y laterales) */
-.controls button ion-icon,
-.full-controls button ion-icon {
-  font-size: 2rem;
-}
-
-/* Tamaño especial para el Play gigante central */
-.main-play ion-icon {
-  font-size: 5rem;
-}
-
-/* Limpiar botones para que solo se vea el icono */
-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 /* --- ESTILOS DEL BUSCADOR --- */
 .search-container {
   margin: 10px 15px 20px 15px;
@@ -628,9 +697,9 @@ button {
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.search-container ion-icon {
-  font-size: 1.2rem;
-  opacity: 0.6;
+.search-container l-icon {
+  font-size: 1.4rem;
+  opacity: 1;
 }
 
 #song-search {
@@ -653,7 +722,7 @@ button {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  position: relative; /* Para posicionar el botón de borrar */
+  position: relative;
 }
 
 .delete-folder-btn {
@@ -718,27 +787,155 @@ button {
 }
 
 /* --- ESTILOS DEL BOTÓN DE FAVORITOS --- */
-/* El botón del corazón */
 .fav-btn {
   background: none;
   border: none;
-  padding: 8px;
+  padding: 2px;
   margin-left: 10px;
   cursor: pointer;
   flex-shrink: 0;
 }
 
-.fav-btn ion-icon {
+.fav-btn l-icon {
   font-size: 1.4rem;
-  color: var(--accent); /* Color arena por defecto */
+  color: var(--accent);
   transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Estilo cuando es favorito */
 .fav-btn .is-fav {
-  color: #ff453a !important; /* Rojo vibrante */
+  color: #ff453a !important;
 }
 
-.fav-btn:active ion-icon {
+.fav-btn:active l-icon {
   transform: scale(1.4);
+}
+
+.search-song {
+  background: none;
+  border: none;
+  color: var(--text);
+  padding: 12px 10px;
+  width: 100%;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.search-song::placeholder {
+  color: var(--text-dim);
+  opacity: 0.5;
+}
+
+/* --- ESTILOS DEL MODAL DE PLAYLIST --- */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+.modal-content {
+  background: linear-gradient(145deg, #252525, #121212);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 30px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  text-align: center;
+}
+
+.modal-content h3 {
+  color: #fff;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  letter-spacing: -0.5px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 2.5rem;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: var(--accent);
+}
+
+#playlist-name {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 14px;
+  color: white;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+}
+
+#playlist-name:focus {
+  border-color: #f2c9a1;
+  background: rgba(255, 255, 255, 0.1);
+  outline: none;
+}
+
+.modal-content button {
+  background-color: #f2c9a1;
+  color: #1a1a1a;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s;
+  width: 100%;
+}
+
+.modal-content button:active {
+  transform: scale(0.96);
+}
+
+.playlist-card {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  padding: 16px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.playlist-card:hover {
+  background: rgba(242, 201, 161, 0.08);
+  border-color: rgba(242, 201, 161, 0.2);
+}
+
+.playlist-card span {
+  font-weight: 600;
+  color: #eee;
+}
+
+.playlist-card small {
+  color: #f2c9a1;
+  font-size: 0.75rem;
+  background: rgba(242, 201, 161, 0.1);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+#existing-playlists-container::-webkit-scrollbar {
+  width: 4px;
+}
+#existing-playlists-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
 }

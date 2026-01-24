@@ -5,9 +5,7 @@ const ASSETS = [
   './offline.html',
   './styles/style.css',
   './scripts/app.js',
-  './manifest.json',
-  'https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js',
-  'https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js',
+  './manifest.json'
 ];
 
 self.addEventListener('install', e => {

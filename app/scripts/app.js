@@ -2,19 +2,20 @@
 const folderInput = document.getElementById('folder-input');
 const detectedFoldersDiv = document.getElementById('detected-folders');
 const songListUI = document.getElementById('song-list');
+const favsSongListUI = document.getElementById('favs-song-list');
+const favsSongSearch = document.getElementById('favs-song-search');
 const audio = document.getElementById('audio-engine');
+const loadingOverlay = document.getElementById('loading-overlay');
 const playBtn = document.getElementById('play-btn');
 const fullPlayBtn = document.getElementById('full-play-btn');
 const nextBtn = document.getElementById('next-btn');
 const fullNextBtn = document.getElementById('full-next-btn');
 const fullPrevBtn = document.getElementById('full-prev-btn');
-const modeBtn = document.getElementById('mode-btn');
 const songSearch = document.getElementById('song-search');
 const progressBar = document.getElementById('progress-bar');
 const fullProgressBar = document.getElementById('full-progress-bar');
 const progressContainer = document.getElementById('progress-container');
 const fullProgressContainer = document.getElementById('full-progress-container');
-const loadingOverlay = document.getElementById('loading-overlay');
 const trackName = document.getElementById('track-name');
 const fullTrackName = document.getElementById('full-track-name');
 const artistName = document.getElementById('artist-name');
@@ -22,6 +23,7 @@ const FullArtistName =document.getElementById('full-artist-name');
 
 let favorites = [];
 let library = {}; 
+let selectedSong = null;
 let currentQueue = []; 
 let currentIndex = -1; 
 let playMode = 'list'; 
@@ -58,7 +60,6 @@ async function saveLibraryToDB(newFiles) {
     const db = await openDB();
     const tx = db.transaction(storeName, "readwrite");
     const store = tx.objectStore(storeName);
-
     const existingLibRequest = store.get("current_lib");
     
     existingLibRequest.onsuccess = async () => {
@@ -78,6 +79,7 @@ async function saveLibraryToDB(newFiles) {
         }
 
         const validFiles = newFiles.filter(f => f.name.match(/\.(mp3|wav|ogg|m4a)$/i));
+        const total = validFiles.length;
         validFiles.forEach(file => {
             const parts = file.webkitRelativePath.split('/');
             const folder = parts.length > 1 ? parts[parts.length - 2] : "Music";
@@ -134,9 +136,9 @@ function renderFolders() {
         card.className = 'folder-card-grid';
         card.innerHTML = `
             <button class="delete-folder-btn" onclick="deleteFolder('${name}', event)">
-                <ion-icon name="trash-outline"></ion-icon>
+                <l-icon name="trash-outline"></l-icon>
             </button>
-            <div style="font-size:2rem;"><ion-icon name="folder-open"></ion-icon></div>
+            <div style="font-size:2rem;"><l-icon name="folder-open"></l-icon></div>
             <div class="f-name">${name}</div>
             <div class="f-count">${library[name].length} canciones</div>`;
         
@@ -175,26 +177,34 @@ function renderNextBatch() {
     const newTitles = [];
 
     batch.forEach((song) => {
-        const realIndex = currentQueue.findIndex(s => s.title === song.title && s.artist === song.artist);
+        const realIndex = currentQueue.findIndex(s => 
+            s.title === song.title && 
+            s.artist === song.artist
+        );
         const favId = `${currentFolderName}-${song.title}`;
         const isFav = favorites.includes(favId);
         const escapedTitle = escapeJS(song.title);
+        const lerma = isFav ? 'heart' : 'heart-outline';
+        const classFav = isFav ? 'is-fav' : '';
 
         const li = document.createElement('li');
         li.className = 'song-item';
         li.innerHTML = `
-            <div class="song-info-container" onclick="playSong(${realIndex})">
-                <div class="album-art-placeholder">
-                    <ion-icon name="musical-note"></ion-icon>
-                </div>
-                <div class="marquee-container" style="overflow:hidden; flex:1;">
-                    <strong class="marquee-text">${song.title}</strong>
-                    <span style="display:block; font-size:0.8em; opacity:0.5;">${song.artist}</span>
-                </div>
+        <div class="song-info-container" onclick="playSong(${realIndex})">
+            <div class="album-art-placeholder">
+                <l-icon name="musical-note"></l-icon>
             </div>
-            <button class="fav-btn" onclick="toggleFavorite('${escapedFolder}', '${escapedTitle}', event)">
-                <ion-icon name="${isFav ? 'heart' : 'heart-outline'}" class="${isFav ? 'is-fav' : ''}"></ion-icon>
-            </button>`;
+            <div class="marquee-container" >
+                <strong class="marquee-text">${song.title}</strong>
+                <span class="song-artist">${song.artist}</span>
+            </div>
+        </div>
+        <button class="fav-btn" onclick="toggleFavorite('${escapedFolder}', '${escapedTitle}', event)">
+            <l-icon name="${lerma}" class="${classFav}"></l-icon>
+        </button> 
+        <button class="fav-btn" onclick="openModal(event, '${escapedTitle}')"> 
+            <l-icon name="ellipsis-vertical"></l-icon>
+        </button>`;
         
         fragment.appendChild(li);
         newTitles.push(li.querySelector('.marquee-text'));
@@ -221,6 +231,87 @@ function setupInfiniteScroll() {
         }
     }, { rootMargin: '300px' });
     if (songListUI.lastElementChild) scrollObserver.observe(songListUI.lastElementChild);
+}
+
+// --- RENDERIZADO DE FAVORITOS ---
+function renderFavorites(searchTerm = "") {
+    favsSongListUI.innerHTML = '';
+    let allFavs = [];
+
+    // 1. Recolectar todas las canciones marcadas como favoritas de todas las carpetas
+    for (const folder in library) {
+        library[folder].forEach(song => {
+            const favId = `${folder}-${song.title}`;
+            if (favorites.includes(favId)) {
+                // Guardamos una copia con el nombre de la carpeta para poder reproducirla
+                allFavs.push({ ...song, folderName: folder });
+            }
+        });
+    }
+
+    // 2. Aplicar filtro de búsqueda si existe
+    if (searchTerm) {
+        allFavs = allFavs.filter(s => 
+            s.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+            s.artist.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    }
+
+    // 3. Actualizar contador
+    document.getElementById('favs-stats-info').textContent = `${allFavs.length} canciones • Favoritos`;
+
+    // 4. Renderizar (Usamos la misma lógica que en renderSongs pero adaptada)
+    const fragment = document.createDocumentFragment();
+    allFavs.forEach((song) => {
+        const li = document.createElement('li');
+        li.className = 'song-item';
+        const escapedFolder = escapeJS(song.folderName);
+        const escapedTitle = escapeJS(song.title);
+
+        li.innerHTML = `
+            <div class="song-info-container">
+                <div class="album-art-placeholder">
+                    <l-icon name="musical-note"></l-icon>
+                </div>
+                <div class="marquee-container" style="overflow:hidden; flex:1;">
+                    <strong class="marquee-text">${song.title}</strong>
+                    <span style="display:block; font-size:0.8em; opacity:0.5;">${song.artist}</span>
+                </div>
+            </div>
+            <button class="fav-btn" onclick="toggleFavoriteFromFavs('${escapedFolder}', '${escapedTitle}', event)">
+                <l-icon name="heart" class="is-fav"></l-icon>
+            </button>`;
+        
+        // Al hacer clic en el contenedor, buscamos la canción en la cola actual y la reproducimos
+        li.querySelector('.song-info-container').onclick = () => {
+            currentQueue = allFavs; // La cola ahora son tus favoritos
+            const index = allFavs.findIndex(s => 
+                s.title === song.title && 
+                s.folderName === song.folderName
+            );
+            playSong(index);
+        };
+
+        fragment.appendChild(li);
+    });
+
+    favsSongListUI.appendChild(fragment);
+}
+
+favsSongSearch.addEventListener('input', (e) => {
+    renderFavorites(e.target.value);
+});
+
+async function toggleFavoriteFromFavs(folder, title, event) {
+    event.stopPropagation();
+    const favId = `${folder}-${title}`;
+    const index = favorites.indexOf(favId);
+    
+    if (index > -1) {
+        favorites.splice(index, 1);
+        await saveFavorites();
+        renderFavorites(favsSongSearch.value); // Refresca la lista
+    }
 }
 
 // --- REPRODUCCIÓN ---
@@ -322,6 +413,15 @@ function togglePlay() {
     if (!audio.src) return;
     audio.paused ? audio.play() : audio.pause();
     updatePlayButtons(!audio.paused);
+
+    // Mostrar u ocultar visualizador
+    if(audio.paused){
+        document.getElementById('default-icon').style.display = 'block';
+        document.getElementById('visualizer').style.display = 'none';
+    } else {
+        document.getElementById('default-icon').style.display = 'none';
+        document.getElementById('visualizer').style.display = 'block';
+    }
 }
 
 function playNext() {
@@ -351,18 +451,117 @@ async function saveFavorites() {
 
 async function loadFavorites() {
     const db = await openDB();
-    const request = db.transaction(storeName, "readonly").objectStore(storeName).get("user_favs");
-    request.onsuccess = () => { if (request.result) favorites = request.result.data; };
+    const tx = db.transaction(storeName, "readonly");
+    const store = tx.objectStore(storeName);
+    const request = store.get("songs_favs");
+
+    return new Promise((resolve) => {
+        request.onsuccess = () => {
+            if (request.result) {
+                favorites = request.result.data;
+            }
+            resolve(); // Avisamos que ya cargaron
+        };
+        request.onerror = () => resolve();
+    });
 }
 
 function toggleFavorite(folder, songTitle, event) {
     event.stopPropagation();
     const favId = `${folder}-${songTitle}`;
+    
     const index = favorites.indexOf(favId);
-    index > -1 ? favorites.splice(index, 1) : favorites.push(favId);
+    if (index > -1) {
+        favorites.splice(index, 1);
+    } else {
+        favorites.push(favId);
+    }
+    
     saveFavorites();
-    renderSongs(currentQueue);
+    renderSongs(currentQueue); 
 }
+
+// --- PLAYLISTS ---
+async function savePlaylist(playlistName) {
+    const db = await openDB();
+    const tx = db.transaction(storeName, "readwrite");
+    const store = tx.objectStore(storeName);
+    const playlistData = {
+        name: playlistName,
+        song: [selectedSong]
+    };
+    const request = store.put({ id: `${playlistName}`, data: playlistData });
+    request.onsuccess = () => {
+        alert(`Playlist "${playlistName}" guardada.`);
+        closeModal();
+        selectedSong = null;
+    }
+}
+
+// --- MANEJO DE MODAL ---
+function Btn_savePlaylist() {
+    const playlist_name = document.getElementById('playlist-name');
+    const name =  playlist_name.value.trim();
+    if (name === "") {
+        alert("El nombre de la playlist no puede estar vacío.");
+        return;
+    }
+    savePlaylist(name);
+}
+
+async function renderPlaylist() {
+    const container = document.getElementById('existing-playlists-container');
+
+    const db = await openDB();
+    const tx = db.transaction(storeName, "readonly");
+    const store = tx.objectStore(storeName);
+    const request = store.getAll();
+
+    request.onsuccess = () => {
+        const allItems = request.result;
+        const userPlaylists = allItems.filter(item => item.id !== 'current_lib');
+
+        if (userPlaylists.length === 0) {
+            const p = document.createElement('p');
+            p.textContent = "No hay playlists creadas aún.";
+            p.style.textAlign = "center";
+            container.appendChild(p);
+            return;
+        }
+
+        userPlaylists.forEach(playlist => {
+            const card = document.createElement('div');
+            card.className = 'playlist-card'; 
+            card.innerHTML = `
+                <span>${playlist.id}</span>
+                <small>${playlist.data.song.length} canciones</small>
+            `;
+            card.onclick = () => addSongPlaylist(playlist.id);
+            container.appendChild(card);
+        });
+    };
+}
+
+async function addSongPlaylist(playlistId) {
+    const db = await openDB();
+    const tx = db.transaction(storeName, "readwrite");
+    const store = tx.objectStore(storeName);
+
+    const getReq = store.get(playlistId);
+    getReq.onsuccess = () => {
+        const playlist = getReq.result;
+        
+        // Añadimos la canción seleccionada al array
+        playlist.data.song.push(selectedSong);
+
+        const updateReq = store.put(playlist);
+        updateReq.onsuccess = () => {
+            alert(`Añadida a ${playlistId}`);
+            closeModal();
+        };
+    };
+}
+
 
 // --- VISUALIZADOR ---
 let audioCtx, analyser, source;
@@ -415,24 +614,46 @@ clearDbBtn.onclick = async () => {
 };
 
 // --- EVENTOS INICIALES ---
-folderInput.onchange = (e) => {
-    const files = Array.from(e.target.files);
-    if (files.length > 0) saveLibraryToDB(files);
-};
+function openModal(event, songTitle) {
+    event.stopPropagation();
+    const modal = document.getElementById('playlist-modal');
+    const body = document.body;
+    modal.style.display = 'flex';
+    body.style.overflow = 'hidden';
+    //document.querySelector('.mini-player').style.display = 'none'; 
+    //document.getElementById('view-detail').style.display = 'none'; 
+    selectedSong = currentQueue.find(s => s.title === songTitle);
+    renderPlaylist();
+}
 
-songSearch.oninput = (e) => {
-    const term = e.target.value.toLowerCase();
-    renderSongs(currentQueue.filter(s => s.title.toLowerCase().includes(term) || s.artist.toLowerCase().includes(term)));
-};
-
-window.onload = async () => {
-    await loadFavorites();
-    loadFromDatabase();
-};
+function closeModal() {
+    const modal = document.getElementById('playlist-modal');
+    const body = document.body;
+    modal.style.display = 'none';
+    body.style.overflow = 'auto';
+    //document.querySelector('.mini-player').style.display = 'block'; 
+    //document.getElementById('view-detail').style.display = 'block'; 
+}
 
 function showMainView() { 
     document.getElementById('view-main').style.display = 'block'; 
     document.getElementById('view-detail').style.display = 'none'; 
+    document.getElementById('view-songs-favs').style.display = 'none';
+    document.getElementById('view-playlist').style.display = 'none';
+}
+
+function showFavoritesView() {
+    document.getElementById('view-main').style.display = 'none';
+    document.getElementById('view-detail').style.display = 'none';
+    document.getElementById('view-songs-favs').style.display = 'block';
+
+    renderFavorites();
+}
+
+function showPlaylistsView() {
+    document.getElementById('view-main').style.display = 'none';
+    document.getElementById('view-detail').style.display = 'none';
+    document.getElementById('view-playlist').style.display = 'block';
 }
 
 function showFullPlayer() { 
@@ -449,6 +670,25 @@ function hideFullPlayer() {
     document.body.style.overflow = 'auto';
 }
 
+folderInput.onchange = (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length > 0) saveLibraryToDB(files);
+};
+
+songSearch.addEventListener('input', (e) => {
+    const term = e.target.value.toLowerCase();
+    const filteredSongs = currentQueue.filter(song => 
+        song.title.toLowerCase().includes(term) || 
+        song.artist.toLowerCase().includes(term)
+    );
+    renderSongs(filteredSongs);
+});
+
+window.onload = async () => {
+    await loadFavorites();
+    loadFromDatabase();
+};
+
 playBtn.onclick = (e) => { 
     e.stopPropagation(); 
     togglePlay(); 
@@ -457,11 +697,6 @@ playBtn.onclick = (e) => {
 nextBtn.onclick = (e) => { 
     e.stopPropagation(); 
     playNext(); 
-};
-
-modeBtn.onclick = () => {
-    playMode = (playMode === 'list') ? 'shuffle' : 'list';
-    modeBtn.querySelector('ion-icon').setAttribute('name', playMode === 'list' ? 'repeat' : 'shuffle');
 };
 
 fullNextBtn.onclick = playNext;

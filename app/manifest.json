@@ -3,6 +3,7 @@
   "short_name": "Music",
   "start_url": "./index.html",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#000000",
   "theme_color": "#3d1409",
   "icons": [
