@@ -2,9 +2,11 @@ const CACHE_NAME = 'music-v1.8.0';
 const ASSETS = [
   './',
   './index.html',
-  './offline.html',
   './styles/style.css',
+  './styles/toast.css',
   './scripts/app.js',
+  './scripts/toast.js',
+  './scripts/LermaIcon.js',
   './manifest.json'
 ];
 
@@ -17,19 +19,13 @@ self.addEventListener('fetch', e => {
     caches.match(e.request).then(res => {
       if (res) return res;
 
-      // Si no está en cache, lo busca en la red
       return fetch(e.request).then(newRes => {
-        // Guarda una copia de lo que bajó en el cache para la próxima
         return caches.open(CACHE_NAME).then(cache => {
           cache.put(e.request, newRes.clone());
           return newRes;
         });
       });
-    }).catch(() => {
-      // Si la petición es de navegación, muestra la página offline
-      if (e.request.mode === 'navigate') {
-        return caches.match('./offline.html');
-      }
+      
     })
   );
 });

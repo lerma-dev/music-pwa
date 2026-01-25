@@ -15,6 +15,10 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   background: var(--bg);
@@ -39,6 +43,18 @@ l-icon {
 }
 
 /* --- ESTILOS PANTALLA PRINCIPAL --- */
+#view-main {
+  overflow-y: auto;
+  mask-image: linear-gradient(to bottom, black 0%, black 90%, transparent 100%);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    black 90%,
+    transparent 100%
+  );
+  padding-bottom: 120px;
+}
+
 .main-header {
   display: flex;
   justify-content: space-between;
@@ -192,7 +208,9 @@ l-icon {
   flex-direction: column;
   gap: 10px;
   border: 1px solid #222;
-  transition: transform 0.2s, background 0.2s;
+  transition:
+    transform 0.2s,
+    background 0.2s;
 }
 
 .folder-card-grid:active {
@@ -297,7 +315,7 @@ l-icon {
   justify-content: space-between;
   padding: 12px 15px;
   margin: 8px 15px;
-  background: #101010;
+  background: var(--card-bg);
   border-radius: 15px;
   border: 1px solid rgba(255, 255, 255, 0.03);
 }
@@ -396,7 +414,7 @@ l-icon {
   opacity: 0.8;
 }
 
-.mode-btn l-icon:hover {
+.mode-btn l-icon:active {
   background: var(--accent);
   color: var(--player-bg);
   border-radius: 50%;
@@ -851,8 +869,13 @@ l-icon {
 .modal-content h3 {
   color: #fff;
   font-size: 1.5rem;
-  margin-bottom: 20px;
+  margin: 10px 0 10px 0;
   letter-spacing: -0.5px;
+}
+
+.modal-content p {
+  margin: 10px 0 10px 0;
+  text-align: center;
 }
 
 .close-btn {
@@ -868,7 +891,7 @@ l-icon {
   color: var(--accent);
 }
 
-#playlist-name {
+.playlist-name {
   width: 100%;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -879,7 +902,7 @@ l-icon {
   transition: all 0.3s ease;
 }
 
-#playlist-name:focus {
+.playlist-name:focus {
   border-color: #f2c9a1;
   background: rgba(255, 255, 255, 0.1);
   outline: none;
@@ -935,7 +958,75 @@ l-icon {
 #existing-playlists-container::-webkit-scrollbar {
   width: 4px;
 }
-#existing-playlists-container::-webkit-scrollbar-thumb {
+#existing-playlists-container::-webkit-scrollbar-thum {
   background: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
+}
+
+#existing-playlists-container {
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 5px;
+  margin-top: 15px;
+
+  scrollbar-width: thin;
+  scrollbar-color: #555 transparent;
+}
+
+#existing-playlists-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+#existing-playlists-container::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 10px;
+}
+
+#existing-playlists-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.content {
+  -webkit-overflow-scrolling: touch;
+}
+
+#view-playlist .content {
+  overflow-y: auto;
+  mask-image: linear-gradient(to bottom, black 0%, black 90%, transparent 100%);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    black 90%,
+    transparent 100%
+  );
+
+  padding-bottom: 120px;
+}
+
+.folder-grid {
+  display: grid;
+  gap: 15px;
+  padding-bottom: 20px;
 }

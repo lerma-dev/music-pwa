@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Músic</title>
     <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/toast.css">
     <!-- PWA -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#3d1409">
@@ -33,7 +34,7 @@
 <body>
     <div id="loading-overlay" class="loading-overlay" style="display: none;">
         <div class="spinner"></div>
-        <p>Indexando canciones...</p>
+        <p>Agregando canciones...</p>
     </div>
 
     <section id="view-main" style="display: block;">
@@ -80,7 +81,7 @@
         <header class="detail-header">
             <div class="header-content">
                 <button class="back-circle-btn" onclick="showMainView()">
-                    <l-icon name="arrow-back-outline"></l-icon>
+                    <l-icon name="arrow-back"></l-icon>
                 </button>
                 <div class="header-info">
                     <h1>Playlists</h1>
@@ -88,15 +89,13 @@
             </div>
             <div class="header-bg-blob"></div>
         </header>
+
         <main class="content">
-            <div class="main-import-card">
+            <div class="main-import-card" onclick="openModalView();">
                 <div class="import-icon">
                     <l-icon name="add-outline"></l-icon>
                 </div>
-                <input type="button" id="add-playlist" hidden>
-                <label for="add-playlist" class="import-info">
-                    <strong>Agregar nuevo</strong>
-                </label>
+                <strong>Agregar nuevo</strong>
             </div>
             <div class="section-divider">
                 <span>Playlists creadas</span>
@@ -107,28 +106,42 @@
         </main>
     </section>
 
-    <!-- Modal -->
-    <div id="playlist-modal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal();">&times;</span>
-            <h2>Crear nueva Playlist</h2>
-            <input type="text" id="playlist-name" placeholder="Nombre de la playlist">
-            <button id="save-playlist" onclick="Btn_savePlaylist();">Guardar</button>
-            
-            <div id="existing-playlists-container">
-                <h3>Guardar en Playlist</h3>
+    <section id="view-playlist-full" style="display: none;">
+        <header class="detail-header">
+            <div class="header-content">
+                <button class="back-circle-btn" onclick="showPlaylistsView()">
+                    <l-icon name="arrow-back"></l-icon>
+                </button>
+                <div class="header-info">
+                    <h1>Playlists</h1>
+                </div>
             </div>
-        </div>
-    </div>
+            <div class="header-bg-blob"></div>
+        </header>
+
+        <main class="content list-container">
+            <div class="list-stats" id="play-stats-info">Playlist • </div>
+            <div class="search-container">
+                <l-icon name="search"></l-icon>
+                <input 
+                    type="text" 
+                    placeholder="Buscar en playlist..."
+                    class="search-song" id="play-song-search">
+            </div>
+
+            <ul id="playlist-song" class="song-list">
+            </ul>
+        </main>
+    </section>
 
     <section id="view-songs-favs" style="display: none;">
         <header class="detail-header">
             <div class="header-content">
                 <button class="back-circle-btn" onclick="showMainView()">
-                    <l-icon name="arrow-back-outline"></l-icon>
+                    <l-icon name="arrow-back"></l-icon>
                 </button>
                 <div class="header-info">
-                    <h1>Canciones Favoritas</h1>
+                    <h1>Favoritos</h1>
                 </div>
             </div>
             <div class="header-bg-blob"></div>
@@ -137,7 +150,7 @@
         <main class="content list-container">
             <div class="list-stats" id="favs-stats-info">Playlist • Favoritos</div>
             <div class="search-container">
-                <l-icon name="search-outline"></l-icon>
+                <l-icon name="search"></l-icon>
                 <input type="text" placeholder="Buscar en favoritos..."
                     class="search-song" id="favs-song-search">
             </div>
@@ -149,7 +162,7 @@
         <header class="detail-header">
             <div class="header-content">
                 <button class="back-circle-btn" onclick="showMainView()">
-                    <l-icon name="arrow-back-outline"></l-icon>
+                    <l-icon name="arrow-back"></l-icon>
                 </button>
                 <div class="header-info">
                     <p class="label">Carpeta seleccionada</p>
@@ -162,7 +175,7 @@
         <main class="content list-container">
             <div class="list-stats" id="folder-stats-info">Playlist • Local</div>
             <div class="search-container">
-                <l-icon name="search-outline"></l-icon>
+                <l-icon name="search"></l-icon>
                 <input 
                     id="song-search"
                     type="text"
@@ -172,7 +185,7 @@
         </main>
     </section>
 
-    <section id="view-player-full" class="full-player" >
+    <section id="view-player-full" class="full-player">
         <button class="close-full" onclick="hideFullPlayer()">
             <l-icon name="chevron-down"></l-icon>
         </button>
@@ -220,7 +233,7 @@
         </div>
     </section>
 
-    <section class="mini-player" onclick="showFullPlayer()" >
+    <section class="mini-player" onclick="showFullPlayer()">
         <div class="progress-container" id="progress-container">
             <div id="progress-bar" class="progress-bar"></div>
         </div>
@@ -244,17 +257,56 @@
             </div>
         </div>
     </section>
+
+    <!-- Modal -->
+    <div id="playlist-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal();">
+                <l-icon name="close"></l-icon>
+            </span>
+            <h3>Crear nueva Playlist</h3>
+            <input 
+                type="text" 
+                id="playlist-name" 
+                class="playlist-name" 
+                placeholder="Nombre de la playlist"
+            >
+            <button id="save-playlist" onclick="Btn_savePlaylist();">Guardar</button>
+            
+            <div id="existing-playlists-container"></div>
+        </div>
+    </div>
+
+    <div id="playlist-modal-view" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModalView();">
+                <l-icon name="close"></l-icon>
+            </span>
+            <h3>Crear nueva Playlist</h3>
+            <input 
+                type="text" 
+                id="playlist-name-view" 
+                class="playlist-name" 
+                placeholder="Nombre de la playlist"
+            >
+            <button id="save-playlist" onclick="Btn_savePlay();">Crear Playlist</button>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="content-toast" id="content-toast"></div>
     
     <audio id="audio-engine"></audio>
 
     <!-- javascripts -->
     <script src="scripts/app.js"></script>
+    <script src="scripts/toast.js"></script>
     <script src="scripts/LermaIcon.js"></script>
     <!-- Service Worker -->
     <script>
         if('serviceWorker' in navigator){
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
+                navigator.serviceWorker.register('sw.js')
                     .then(registration => {
                         console.log('Service Worker registrado con éxito:', registration.scope);
                     })
