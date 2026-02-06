@@ -1,0 +1,9 @@
+{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.localtunes.app", 
+    "sha256_cert_fingerprints":
+    ["7A:3E:A3:F6:1D:54:02:2E:81:C5:BA:6D:BE:89:05:1B:EA:C2:39:49:60:DC:47:3C:52:EE:26:1E:B8:4F:D4:E9"]
+  }
+}
