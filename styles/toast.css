@@ -1,16 +1,16 @@
 /* Toast */
 .content-toast {
   position: fixed;
-  bottom: 20px;
+  z-index: 10001;
+  pointer-events: none;
+  display: flex;
+  color: #fff;
+  bottom: 100px; 
   right: 20px;
   width: 100%;
   max-width: 400px;
-  display: flex;
   flex-direction: column-reverse;
   gap: 15px;
-  color: #fff;
-  z-index: 1000;
-  pointer-events: none; 
 }
 
 .toast {
@@ -124,17 +124,12 @@
 /* Vista del Toast para celular */
 @media (max-width: 599px) {
   .content-toast {
-    position: fixed;
+    bottom: auto; 
     top: 15px;
     right: 50%;
     transform: translateX(50%);
-    width: 100%;
     max-width: 300px;
-    display: flex;
     flex-direction: column;
-    gap: 15px;
-    color: #fff;
-    pointer-events: none;
   }
 
   .toast {
