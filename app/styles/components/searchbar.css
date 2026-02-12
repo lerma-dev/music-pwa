@@ -1,0 +1,45 @@
+/* --- ESTILOS DEL BUSCADOR --- */
+.search-container {
+  margin: 10px 15px 20px 15px;
+  background: var(--card-bg);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.search-container l-icon {
+  font-size: 1.4rem;
+  opacity: 1;
+}
+
+#song-search {
+  background: none;
+  border: none;
+  color: var(--text);
+  padding: 12px 10px;
+  width: 100%;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.search-song {
+  background: none;
+  border: none;
+  color: var(--text);
+  padding: 12px 10px;
+  width: 100%;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+#song-search::placeholder {
+  color: var(--text-dim);
+  opacity: 0.5;
+}
+
+.search-song::placeholder {
+  color: var(--text-dim);
+  opacity: 0.5;
+}

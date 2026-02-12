@@ -1,0 +1,197 @@
+/* --- REPRODUCTOR FULL --- */
+.full-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 20px;
+  height: 80vh;
+}
+
+.main-play l-icon {
+  font-size: 5rem;
+}
+
+.controls button l-icon,
+.full-controls button l-icon {
+  font-size: 2rem;
+}
+
+.full-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.extra-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+}
+
+#full-prev-btn,
+#full-next-btn {
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 2.5rem;
+  cursor: pointer;
+}
+
+.mode-btn {
+  background: none;
+  border: 50%;
+  color: var(--accent);
+  font-size: 2.5rem;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.mode-btn l-icon:active {
+  background: var(--accent);
+  color: var(--player-bg);
+  border-radius: 50%;
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.full-player {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--player-bg);
+  z-index: 2000;
+  transform: translateY(100%);
+  transition: transform 0.4s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.full-player.active {
+  transform: translateY(0);
+}
+
+.close-full {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 2rem;
+  padding: 20px;
+  align-self: center;
+}
+
+.full-album-art {
+  width: 300px;
+  height: 300px;
+  background: #1a1a1a;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+#default-icon {
+  position: relative;
+  font-size: 10rem;
+  z-index: 2;
+}
+
+#visualizer {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.full-info {
+  width: 100%;
+  text-align: center;
+}
+
+.full-info h2 {
+  margin-bottom: 5px;
+  font-size: 1.6rem;
+}
+
+#full-artist-name {
+  color: var(--text-dim);
+  font-size: 1rem;
+  margin-top: 5px;
+}
+
+.full-controls {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.full-controls button {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 2.2rem;
+}
+
+.main-play {
+  font-size: 4rem !important;
+}
+
+.full-progress {
+  width: 90%;
+  margin: 20px auto;
+}
+
+#full-progress-container {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+#full-progress-bar {
+  position: relative;
+  height: 100%;
+  background: var(--accent);
+  border-radius: 10px;
+  width: 0%;
+  transition: none;
+}
+
+.time-labels {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.time-labels span {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.progress-thumb {
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 16px;
+  background: #000;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 0, 0);
+}

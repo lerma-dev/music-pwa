@@ -1,0 +1,115 @@
+/* --- ESTILOS DEL BOTÓN DE BORRAR CARPETA --- */
+.delete-folder-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 69, 58, 0.2);
+  color: #ff453a;
+  border-radius: 8px;
+  padding: 6px;
+  font-size: 1.2rem;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-folder-btn:active {
+  background: #ff453a;
+  color: white;
+}
+
+/* --- ESTILOS DEL BOTÓN DE FAVORITOS --- */
+.fav-btn {
+  background: none;
+  border: none;
+  padding: 2px;
+  margin-left: 10px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.fav-btn l-icon {
+  font-size: 1.4rem;
+  color: var(--accent);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.fav-btn .is-fav {
+  color: #ff453a !important;
+}
+
+.fav-btn:active l-icon {
+  transform: scale(1.4);
+}
+
+/* Boton de cerrar */
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 2.5rem;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: var(--accent);
+}
+
+/* Boton de favoritos de la pantalla 1 */
+.open-songs-favs {
+  color: #ff453a;
+  padding: 10px;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+
+.open-songs-favs:hover {
+  background: #ff5f5f;
+  color: white;
+  transform: scale(0.9);
+}
+
+.open-songs-favs l-icon {
+  color: inherit;
+  font-size: 1.5rem;
+}
+
+/* Boton para ver y crear playlist */
+.create-playlist {
+  color: var(--accent);
+  padding: 10px;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+
+.create-playlist:hover {
+  background: #459752;
+  color: white;
+  transform: scale(0.9);
+}
+
+.create-playlist l-icon {
+  color: inherit;
+  font-size: 1.5rem;
+}
+
+/* Boton de borrar la base de datos */
+.clear-btn  {
+  color: var(--accent);
+  padding: 10px;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+
+.clear-btn l-icon {
+  color: inherit;
+  font-size: 1.5rem;
+}
+
+.clear-btn:hover {
+  background: #ff453a;
+  color: white;
+  transform: scale(0.9);
+}

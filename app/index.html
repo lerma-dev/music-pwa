@@ -4,39 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Músic</title>
-    <link rel="stylesheet" href="styles/style.css">
-    <link rel="stylesheet" href="styles/toast.css">
-    <!-- PWA -->
+    <!-- ESTILOS -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- WEB -->
+    <link rel="icon" type="image/ico" 
+        href="assets/icons/favicon.ico">
+    <!-- ANDROID -->
     <link rel="manifest" href="manifest.json">
+    <!-- IOS -->
     <meta name="theme-color" content="#3d1409">
-    <link rel="icon" type="image/ico" href="assets/icons/favicon.ico">
     <link rel="apple-touch-icon" href="assets/icons/icon-180.png">
     <meta name="apple-mobile-web-app-title" content="Music">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="#3d1409">
-
-    <link rel="apple-touch-startup-image" 
-        media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)" 
-        href="assets/icons/apple-splash-1290-2796.png">
-
-    <link rel="apple-touch-startup-image" 
-        media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)" 
-        href="assets/icons/apple-splash-1179-2556.png">
-
-    <link rel="apple-touch-startup-image" 
-        media="screen and (device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3)" 
-        href="assets/icons/apple-splash-1284-2778.png">
-
-    <link rel="apple-touch-startup-image" 
-        media="screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)" 
-        href="assets/icons/apple-splash-1170-2532.png">
 </head>
 <body>
+    <!-- SPINNER -->
     <div id="loading-overlay" class="loading-overlay" style="display: none;">
         <div class="spinner"></div>
         <p>Agregando canciones...</p>
     </div>
 
+    <!-- MODAL de la pantalla 2 -->
+    <div id="playlist-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal();">
+                <l-icon name="close"></l-icon>
+            </span>
+            <h3>Crear nueva Playlist</h3>
+            <input 
+                type="text" 
+                id="playlist-name" 
+                class="playlist-name" 
+                placeholder="Nombre de la playlist"
+            >
+            <button id="save-playlist" onclick="Btn_savePlaylist();">Guardar</button>
+            
+            <div id="existing-playlists-container"></div>
+        </div>
+    </div>
+
+    <!-- MODAL de la pantalla 3 -->
+    <div id="playlist-modal-view" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModalView();">
+                <l-icon name="close"></l-icon>
+            </span>
+            <h3>Crear nueva Playlist</h3>
+            <input 
+                type="text" 
+                id="playlist-name-view" 
+                class="playlist-name" 
+                placeholder="Nombre de la playlist"
+            >
+            <button id="save-playlist" onclick="Btn_savePlay();">Crear Playlist</button>
+        </div>
+    </div>
+
+    <!-- 1. PANTALLA PRINCIPAL -->
     <section id="view-main" style="display: block;">
         <header class="main-header">
             <div class="brand-text">
@@ -46,10 +71,13 @@
                 <button class="open-songs-favs"  onclick="showFavoritesView()" title="Favoritos">
                     <l-icon name="heart"></l-icon>
                 </button>
+
                 <button class="create-playlist" onclick="showPlaylistsView()" title="Playlists">
                     <l-icon name="albums"></l-icon>
                 </button>
-                <button id="clear-db-btn" class="clear-btn" title="Eliminar todo">
+                
+                <button id="clear-db-btn" class="clear-btn" 
+                title="Eliminar todo">
                     <l-icon name="trash"></l-icon>
                 </button>
             </div>
@@ -77,6 +105,35 @@
         </main>
     </section> 
 
+    <!-- 2. PANTALLA DETALLES DE MUSICA -->
+    <section id="view-detail" style="display: none;">
+        <header class="detail-header">
+            <div class="header-content">
+                <button class="back-circle-btn" onclick="showMainView()">
+                    <l-icon name="arrow-back"></l-icon>
+                </button>
+                <div class="header-info">
+                    <p class="label">Carpeta seleccionada</p>
+                    <h1 id="current-folder-title">Carpeta</h1>
+                </div>
+            </div>
+            <div class="header-bg-blob"></div>
+        </header>
+
+        <main class="content list-container">
+            <div class="list-stats" id="folder-stats-info">Playlist • Local</div>
+            <div class="search-container">
+                <l-icon name="search"></l-icon>
+                <input 
+                    id="song-search"
+                    type="text"
+                    placeholder="Buscar en esta carpeta..." >
+            </div>
+            <ul id="song-list" class="song-list"></ul>
+        </main>
+    </section>
+
+    <!-- 3. PANTALLA PLAYLIST (aparecen solo playlist) -->
     <section id="view-playlist" style="display: none;">
         <header class="detail-header">
             <div class="header-content">
@@ -106,6 +163,7 @@
         </main>
     </section>
 
+    <!-- 4. PANTALLA FULL PLAYLIST (despues de dar click)-->
     <section id="view-playlist-full" style="display: none;">
         <header class="detail-header">
             <div class="header-content">
@@ -134,6 +192,7 @@
         </main>
     </section>
 
+    <!-- 5. PANTALLA FAVORITOS -->
     <section id="view-songs-favs" style="display: none;">
         <header class="detail-header">
             <div class="header-content">
@@ -158,33 +217,7 @@
         </main>
     </section>
 
-    <section id="view-detail" style="display: none;">
-        <header class="detail-header">
-            <div class="header-content">
-                <button class="back-circle-btn" onclick="showMainView()">
-                    <l-icon name="arrow-back"></l-icon>
-                </button>
-                <div class="header-info">
-                    <p class="label">Carpeta seleccionada</p>
-                    <h1 id="current-folder-title">Carpeta</h1>
-                </div>
-            </div>
-            <div class="header-bg-blob"></div>
-        </header>
-
-        <main class="content list-container">
-            <div class="list-stats" id="folder-stats-info">Playlist • Local</div>
-            <div class="search-container">
-                <l-icon name="search"></l-icon>
-                <input 
-                    id="song-search"
-                    type="text"
-                    placeholder="Buscar en esta carpeta..." >
-            </div>
-            <ul id="song-list" class="song-list"></ul>
-        </main>
-    </section>
-
+    <!-- 6. PANTALLA REPRODUCTOR COMPLETO -->
     <section id="view-player-full" class="full-player">
         <button class="close-full" onclick="hideFullPlayer()">
             <l-icon name="chevron-down"></l-icon>
@@ -233,7 +266,8 @@
         </div>
     </section>
 
-    <section class="mini-player" onclick="showFullPlayer()">
+    <!-- MINI-REPRODUCTOR -->
+    <footer class="mini-player" onclick="showFullPlayer()">
         <div class="progress-container" id="progress-container">
             <div id="progress-bar" class="progress-bar"></div>
         </div>
@@ -256,46 +290,11 @@
                 </button>
             </div>
         </div>
-    </section>
+    </footer>
 
-    <!-- Modal -->
-    <div id="playlist-modal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal();">
-                <l-icon name="close"></l-icon>
-            </span>
-            <h3>Crear nueva Playlist</h3>
-            <input 
-                type="text" 
-                id="playlist-name" 
-                class="playlist-name" 
-                placeholder="Nombre de la playlist"
-            >
-            <button id="save-playlist" onclick="Btn_savePlaylist();">Guardar</button>
-            
-            <div id="existing-playlists-container"></div>
-        </div>
-    </div>
-
-    <div id="playlist-modal-view" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModalView();">
-                <l-icon name="close"></l-icon>
-            </span>
-            <h3>Crear nueva Playlist</h3>
-            <input 
-                type="text" 
-                id="playlist-name-view" 
-                class="playlist-name" 
-                placeholder="Nombre de la playlist"
-            >
-            <button id="save-playlist" onclick="Btn_savePlay();">Crear Playlist</button>
-        </div>
-    </div>
-
-    <!-- Toast -->
+    <!-- TOAST -->
     <div class="content-toast" id="content-toast"></div>
-    
+
     <audio id="audio-engine"></audio>
 
     <!-- javascripts -->

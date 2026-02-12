@@ -1,0 +1,125 @@
+/* --- VISTA DETALLE--- */
+.detail-header {
+  position: relative;
+  padding: 40px 20px;
+  background: linear-gradient(180deg, var(--player-bg) 0%, var(--bg) 100%);
+  overflow: hidden;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  position: relative;
+  z-index: 2;
+}
+
+.back-circle-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-info h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.header-info .label {
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.header-bg-blob {
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 200px;
+  height: 200px;
+  background: var(--accent);
+  filter: blur(80px);
+  opacity: 0.15;
+}
+
+.list-stats {
+  padding: 15px 20px 5px;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+.song-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.song-item .marquee-text {
+  display: inline-block;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.song-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 15px;
+  margin: 8px 15px;
+  background: var(--card-bg);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.song-artist {
+  display: block;
+  font-size: 0.8em;
+  opacity: 0.5;
+}
+
+.song-info-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.album-art-placeholder {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.song-item:active {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.song-item::before {
+  margin-right: 15px;
+  opacity: 0.4;
+}
+
+.song-item strong {
+  flex: 1;
+  font-weight: 400;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

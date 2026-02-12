@@ -1,0 +1,19 @@
+:root {
+  /* Colores por defecto */
+  --bg: #000;
+  --card-bg: #1a1a1a;
+  --player-bg: #3d1409;
+  --text: #ffffff;
+  --text-dim: #999;
+  --accent: #f0c9a5;
+  --linear-gradient: linear-gradient(to bottom, #1a1a1a, #000);
+  
+  /* Fuentes y tamaño */
+  --font-main: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --border-radius: 20px;
+  --sidebar-width: 250px;
+  
+  /*Scrollbar*/
+  --scrollbar-thumb-bg: rgba(255, 255, 255, 0.1);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.3);
+}

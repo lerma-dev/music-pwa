@@ -1,0 +1,126 @@
+/* CUADRÍCULA DE CARPETAS */
+.folder-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  overflow: auto;
+  gap: 12px;
+}
+
+.folder-card-grid {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  gap: 10px;
+  background: var(--card-bg);
+  padding: 20px;
+  border-radius: 22px;
+  border: 1px solid #222;
+  transition: transform 0.2s;
+  background: 0.2s;
+}
+
+.folder-card-grid:active {
+  transform: scale(0.95);
+  background: #252525;
+}
+
+.folder-card-grid .f-icon {
+  font-size: 2rem;
+  margin-bottom: 5px;
+}
+
+.folder-card-grid .f-name {
+  font-weight: 600;
+  color: var(--accent);
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.folder-card-grid .f-count {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+/* playlist card modal pantalla 1 */
+.playlist-card {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  padding: 16px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.playlist-card:hover {
+  background: rgba(242, 201, 161, 0.08);
+  border-color: rgba(242, 201, 161, 0.2);
+}
+
+.playlist-name {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 14px;
+  color: white;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+}
+
+.playlist-name:focus {
+  border-color: #f2c9a1;
+  background: rgba(255, 255, 255, 0.1);
+  outline: none;
+}
+
+.playlist-card span {
+  font-weight: 600;
+  color: #eee;
+}
+
+.playlist-card small {
+  color: #f2c9a1;
+  font-size: 0.75rem;
+  background: rgba(242, 201, 161, 0.1);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+#existing-playlists-container {
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 5px;
+  margin-top: 15px;
+
+  scrollbar-width: thin;
+  scrollbar-color: #555 transparent;
+}
+
+#existing-playlists-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#existing-playlists-container::-webkit-scrollbar {
+  width: 4px;
+}
+#existing-playlists-container::-webkit-scrollbar-thum {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+#existing-playlists-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+#existing-playlists-container::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 10px;
+}

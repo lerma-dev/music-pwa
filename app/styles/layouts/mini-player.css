@@ -1,0 +1,75 @@
+/* --- MINI REPRODUCTOR --- */
+.list-container {
+  padding-bottom: 120px;
+}
+
+.mini-player {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: var(--player-bg);
+  padding: 5px 0 5px 0;
+  border-radius: 10px 10px 0 0;
+  z-index: 9999;
+  box-shadow: 0 -5px 20px rgba(255, 255, 255, 0.1);
+}
+
+.progress-container {
+  width: 95%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0 auto 10px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--accent);
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+.player-flex {
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  gap: 15px;
+}
+
+.album-art-mini {
+  width: 40px;
+  height: 40px;
+  background: #222;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.track-info {
+  flex: 1;
+  overflow: hidden;
+}
+
+.track-info strong {
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+#artist-name {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.controls {
+  display: flex;
+  gap: 15px;
+}
+
+.controls button {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 2rem;
+}
