@@ -1,0 +1,35 @@
+<!-- MODAL de la pantalla 2 -->
+<div id="playlist-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal();">
+            <l-icon name="close"></l-icon>
+        </span>
+        <h3>Crear nueva Playlist</h3>
+        <input 
+            type="text" 
+            id="playlist-name" 
+            class="playlist-name" 
+            placeholder="Nombre de la playlist"
+        >
+        <button id="save-playlist" onclick="Btn_savePlaylist();">Guardar</button>
+        
+        <div id="existing-playlists-container"></div>
+    </div>
+</div>
+
+<!-- MODAL de la pantalla 3 -->
+<div id="playlist-modal-view" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModalView();">
+            <l-icon name="close"></l-icon>
+        </span>
+        <h3>Crear nueva Playlist</h3>
+        <input 
+            type="text" 
+            id="playlist-name-view" 
+            class="playlist-name" 
+            placeholder="Nombre de la playlist"
+        >
+        <button id="save-playlist-view" onclick="Btn_savePlay();">Crear Playlist</button>
+    </div>
+</div>

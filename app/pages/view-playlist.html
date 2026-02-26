@@ -1,0 +1,29 @@
+<!-- 3. PANTALLA PLAYLIST -->
+<section id="view-playlist" style="display: none;">
+    <header class="detail-header">
+        <div class="header-content">
+            <button class="back-circle-btn" onclick="showMainView()">
+                <l-icon name="arrow-back"></l-icon>
+            </button>
+            <div class="header-info">
+                <h1>Playlists</h1>
+            </div>
+        </div>
+        <div class="header-bg-blob"></div>
+    </header>
+
+    <main class="content">
+        <div class="main-import-card" onclick="openModalView();">
+            <div class="import-icon">
+                <l-icon name="add-outline"></l-icon>
+            </div>
+            <strong>Agregar nuevo</strong>
+        </div>
+        <div class="section-divider">
+            <span>Playlists creadas</span>
+            <div class="line"></div>
+        </div>
+
+        <div id="created-playlists" class="folder-grid"></div>
+    </main>
+</section>
