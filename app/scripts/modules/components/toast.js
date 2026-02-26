@@ -76,3 +76,5 @@ ContentToast.addEventListener("click", (e) => {
 const closeToast = (id) => {
     document.getElementById(id)?.classList.add("cerrando");
 }
+
+export default agregarToast;

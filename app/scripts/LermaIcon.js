@@ -10,7 +10,7 @@ class LermaIcon extends HTMLElement {
     attributeChangedCallback() { this.render(); }
 
     render() {
-        const name = this.getAttribute('name') || 'help-circle';
+        const name = this.getAttribute('name') || 'help';
         const path = `assets/lerma-icons/${name}.svg`;
 
         this.shadowRoot.innerHTML = `
