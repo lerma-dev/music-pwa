@@ -1,31 +1,78 @@
 import { state } from '../utils/state.js';
 import { applyMarqueeIfNeeded } from '../utils/helpers.js';
 
-const audio = document.getElementById('audio-engine');
-const trackName = document.getElementById('track-name');
-const fullTrackName = document.getElementById('full-track-name');
-const artistName = document.getElementById('artist-name');
-const FullArtistName = document.getElementById('full-artist-name');
-const progressBar = document.getElementById('progress-bar');
-const fullProgressBar = document.getElementById('full-progress-bar');
-const progressContainer = document.getElementById('progress-container');
-const fullProgressContainer = document.getElementById('full-progress-container');
-const playBtn = document.getElementById('play-btn');
-const fullPlayBtn = document.getElementById('full-play-btn');
-const nextBtn = document.getElementById('next-btn');
-const fullNextBtn = document.getElementById('full-next-btn');
-const fullPrevBtn = document.getElementById('full-prev-btn');
-
 // --- VISUALIZADOR ---
 let audioCtx, analyser, source;
-const canvas = document.getElementById('visualizer');
-const canvasCtx = canvas.getContext('2d');
+let canvas, canvasCtx;
 
+// --- REFERENCIAS DOM (se asignan en initPlayer, después de loadViews) ---
+let audio, trackName, fullTrackName, artistName, FullArtistName;
+let progressBar, fullProgressBar, progressContainer, fullProgressContainer;
+let playBtn, fullPlayBtn, nextBtn, fullNextBtn, fullPrevBtn;
+
+export function initPlayer() {
+    audio                 = document.getElementById('audio-engine');
+    trackName             = document.getElementById('track-name');
+    fullTrackName         = document.getElementById('full-track-name');
+    artistName            = document.getElementById('artist-name');
+    FullArtistName        = document.getElementById('full-artist-name');
+    progressBar           = document.getElementById('progress-bar');
+    fullProgressBar       = document.getElementById('full-progress-bar');
+    progressContainer     = document.getElementById('progress-container');
+    fullProgressContainer = document.getElementById('full-progress-container');
+    playBtn               = document.getElementById('play-btn');
+    fullPlayBtn           = document.getElementById('full-play-btn');
+    nextBtn               = document.getElementById('next-btn');
+    fullNextBtn           = document.getElementById('full-next-btn');
+    fullPrevBtn           = document.getElementById('full-prev-btn');
+    canvas                = document.getElementById('visualizer');
+    canvasCtx             = canvas.getContext('2d');
+
+    // Botones
+    playBtn.onclick     = (e) => { e.stopPropagation(); togglePlay(); };
+    nextBtn.onclick     = (e) => { e.stopPropagation(); playNext(); };
+    fullNextBtn.onclick = playNext;
+    fullPlayBtn.onclick = togglePlay;
+    fullPrevBtn.onclick = playPrev;
+    audio.onended       = playNext;
+
+    // Progreso
+    audio.ontimeupdate = () => {
+        if (isNaN(audio.duration)) return;
+        const pct = (audio.currentTime / audio.duration) * 100;
+        if (progressBar)     progressBar.style.width     = pct + '%';
+        if (fullProgressBar) fullProgressBar.style.width = pct + '%';
+        document.getElementById('current-time').textContent = formatTime(audio.currentTime);
+        document.getElementById('total-time').textContent   = formatTime(audio.duration);
+    };
+
+    audio.onloadedmetadata = () => {
+        if ('mediaSession' in navigator) {
+            navigator.mediaSession.setPositionState({
+                duration:     audio.duration,
+                playbackRate: audio.playbackRate,
+                position:     audio.currentTime
+            });
+        }
+    };
+
+    progressContainer.onclick = (e) => {
+        const rect = progressContainer.getBoundingClientRect();
+        audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+    };
+
+    fullProgressContainer.onclick = (e) => {
+        const rect = fullProgressContainer.getBoundingClientRect();
+        audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+    };
+}
+
+// --- VISUALIZADOR ---
 export function initVisualizer() {
     if (audioCtx) return;
     audioCtx = new (window.AudioContext || window.AudioContext)();
     analyser = audioCtx.createAnalyser();
-    source = audioCtx.createMediaElementSource(audio);
+    source   = audioCtx.createMediaElementSource(audio);
     source.connect(analyser);
     analyser.connect(audioCtx.destination);
     analyser.fftSize = 64;
@@ -35,7 +82,7 @@ export function initVisualizer() {
 function draw() {
     requestAnimationFrame(draw);
     const bufferLength = analyser.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
+    const dataArray    = new Uint8Array(bufferLength);
     analyser.getByteFrequencyData(dataArray);
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
     const barWidth = (canvas.width / bufferLength) * 2.5;
@@ -58,14 +105,14 @@ export function playSong(i) {
     audio.src = URL.createObjectURL(song.file);
     audio.play().catch(e => console.log("Error:", e));
 
-    trackName.textContent = song.title;
-    fullTrackName.textContent = song.title;
-    artistName.textContent = song.artist;
+    trackName.textContent      = song.title;
+    fullTrackName.textContent  = song.title;
+    artistName.textContent     = song.artist;
     FullArtistName.textContent = song.artist;
 
-    const defaultIcon = document.getElementById('default-icon');
+    const defaultIcon      = document.getElementById('default-icon');
     const visualizerCanvas = document.getElementById('visualizer');
-    if (defaultIcon) defaultIcon.style.display = 'none';
+    if (defaultIcon)      defaultIcon.style.display      = 'none';
     if (visualizerCanvas) visualizerCanvas.style.display = 'block';
     initVisualizer();
 
@@ -76,30 +123,29 @@ export function playSong(i) {
 
     if ('mediaSession' in navigator) {
         navigator.mediaSession.metadata = new MediaMetadata({
-            title: song.title,
-            artist: song.artist,
-            album: document.getElementById('current-folder-title').textContent,
+            title:   song.title,
+            artist:  song.artist,
+            album:   document.getElementById('current-folder-title').textContent,
             artwork: [{ src: 'assets/icons/icon-512.png', sizes: '512x512', type: 'image/png' }]
         });
-
         navigator.mediaSession.setActionHandler('previoustrack', playPrev);
-        navigator.mediaSession.setActionHandler('nexttrack', playNext);
-        navigator.mediaSession.setActionHandler('play', togglePlay);
-        navigator.mediaSession.setActionHandler('pause', togglePlay);
+        navigator.mediaSession.setActionHandler('nexttrack',     playNext);
+        navigator.mediaSession.setActionHandler('play',          togglePlay);
+        navigator.mediaSession.setActionHandler('pause',         togglePlay);
     }
 
     updatePlayButtons(true);
 }
 
 export function playNext() {
-    let next = (state.playMode === 'shuffle')
+    const next = (state.playMode === 'shuffle')
         ? Math.floor(Math.random() * state.currentQueue.length)
         : (state.currentIndex + 1) % state.currentQueue.length;
     playSong(next);
 }
 
 export function playPrev() {
-    let prev = (state.currentIndex - 1 + state.currentQueue.length) % state.currentQueue.length;
+    const prev = (state.currentIndex - 1 + state.currentQueue.length) % state.currentQueue.length;
     playSong(prev);
 }
 
@@ -107,66 +153,20 @@ export function togglePlay() {
     if (!audio.src) return;
     audio.paused ? audio.play() : audio.pause();
     updatePlayButtons(!audio.paused);
-
-    if (audio.paused) {
-        document.getElementById('default-icon').style.display = 'block';
-        document.getElementById('visualizer').style.display = 'none';
-    } else {
-        document.getElementById('default-icon').style.display = 'none';
-        document.getElementById('visualizer').style.display = 'block';
-    }
+    document.getElementById('default-icon').style.display = audio.paused ? 'block' : 'none';
+    document.getElementById('visualizer').style.display   = audio.paused ? 'none'  : 'block';
 }
 
 export function updatePlayButtons(isPlaying) {
-    const pIcon = document.getElementById('play-icon');
+    const pIcon  = document.getElementById('play-icon');
     const fPIcon = document.getElementById('full-play-icon');
-    const name = isPlaying ? 'pause' : 'play';
-    if (pIcon) pIcon.setAttribute('name', name);
+    const name   = isPlaying ? 'pause' : 'play';
+    if (pIcon)  pIcon.setAttribute('name',  name);
     if (fPIcon) fPIcon.setAttribute('name', name);
 }
 
-// --- BARRA DE PROGRESO ---
-audio.ontimeupdate = () => {
-    if (isNaN(audio.duration)) return;
-    const { formatTime } = import('../utils/helpers.js').catch(() => ({ formatTime: () => '' }));
-    const pct = (audio.currentTime / audio.duration) * 100;
-    if (progressBar) progressBar.style.width = pct + '%';
-    if (fullProgressBar) fullProgressBar.style.width = pct + '%';
-
-    document.getElementById('current-time').textContent = formatTimeSync(audio.currentTime);
-    document.getElementById('total-time').textContent = formatTimeSync(audio.duration);
-};
-
-function formatTimeSync(s) {
-    const m = Math.floor(s / 60);
+function formatTime(s) {
+    const m  = Math.floor(s / 60);
     const sc = Math.floor(s % 60);
     return `${m}:${sc < 10 ? '0' : ''}${sc}`;
 }
-
-audio.onloadedmetadata = () => {
-    if ('mediaSession' in navigator) {
-        navigator.mediaSession.setPositionState({
-            duration: audio.duration,
-            playbackRate: audio.playbackRate,
-            position: audio.currentTime
-        });
-    }
-};
-
-progressContainer.onclick = (e) => {
-    const rect = progressContainer.getBoundingClientRect();
-    audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
-};
-
-fullProgressContainer.onclick = (e) => {
-    const rect = fullProgressContainer.getBoundingClientRect();
-    audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
-};
-
-// --- EVENTOS DE BOTONES ---
-playBtn.onclick = (e) => { e.stopPropagation(); togglePlay(); };
-nextBtn.onclick = (e) => { e.stopPropagation(); playNext(); };
-fullNextBtn.onclick = playNext;
-fullPlayBtn.onclick = togglePlay;
-fullPrevBtn.onclick = playPrev;
-audio.onended = playNext;

@@ -3,8 +3,17 @@ import { openDB, storeName } from '../db/database.js';
 import { escapeJS } from '../utils/helpers.js';
 import { playSong } from './player.js';
 
-const favsSongListUI = document.getElementById('favs-song-list');
-const favsSongSearch = document.getElementById('favs-song-search');
+// --- REFERENCIAS DOM (se asignan en initFavorites) ---
+let favsSongListUI, favsSongSearch;
+
+export function initFavorites() {
+    favsSongListUI = document.getElementById('favs-song-list');
+    favsSongSearch = document.getElementById('favs-song-search');
+
+    favsSongSearch.addEventListener('input', (e) => {
+        renderFavorites(e.target.value);
+    });
+}
 
 export async function saveFavorites() {
     const db = await openDB();
@@ -20,9 +29,7 @@ export async function loadFavorites() {
 
     return new Promise((resolve) => {
         request.onsuccess = () => {
-            if (request.result) {
-                state.favorites = request.result.data;
-            }
+            if (request.result) state.favorites = request.result.data;
             resolve();
         };
         request.onerror = () => resolve();
@@ -39,8 +46,6 @@ export function toggleFavorite(folder, songTitle, event) {
         state.favorites.push(favId);
     }
     saveFavorites();
-
-    // Re-render songs
     import('./songs.js').then(({ renderSongs }) => renderSongs(state.currentQueue));
 }
 
@@ -82,7 +87,7 @@ export function renderFavorites(searchTerm = "") {
         const li = document.createElement('li');
         li.className = 'song-item';
         const escapedFolder = escapeJS(song.folderName);
-        const escapedTitle = escapeJS(song.title);
+        const escapedTitle  = escapeJS(song.title);
 
         li.innerHTML = `
             <div class="song-info-container">
@@ -112,10 +117,6 @@ export function renderFavorites(searchTerm = "") {
 
     favsSongListUI.appendChild(fragment);
 }
-
-favsSongSearch.addEventListener('input', (e) => {
-    renderFavorites(e.target.value);
-});
 
 // Exponer globalmente
 window.toggleFavoriteFromFavs = toggleFavoriteFromFavs;
