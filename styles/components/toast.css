@@ -21,6 +21,7 @@
   animation: apertura 500ms ease-out;
   position: relative;
   overflow: hidden;
+  pointer-events: auto;
 }
 
 .toast .content-info {
@@ -67,7 +68,7 @@
 }
 
 .toast .titulo {
-  font-weight: 1rem;
+  font-size: 1rem;
   margin-bottom: 5px;
 }
 

@@ -2,11 +2,10 @@ const CACHE_NAME = 'music-v1.8.0';
 const ASSETS = [
   './',
   './index.html',
-  './styles/style.css',
-  './styles/toast.css',
+  './styles/main.css',
   './scripts/app.js',
-  './scripts/toast.js',
   './scripts/LermaIcon.js',
+  './assets/lerma-icons/help.svg',
   './manifest.json'
 ];
 
