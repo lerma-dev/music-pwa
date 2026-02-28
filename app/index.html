@@ -18,23 +18,20 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="#3d1409">
 </head>
 <body>
-    <!-- SPINNER -->
+    <!-- SPINNER && TOAST-->
     <div id="loading-overlay" class="loading-overlay" style="display: none;">
         <div class="spinner"></div>
         <p>Agregando canciones...</p>
     </div>
 
-    <!-- VISTAS (se inyectan desde /pages) -->
-    <div id="app"></div>
-
-    <!-- TOAST -->
     <div class="content-toast" id="content-toast"></div>
 
+    <!-- VISTAS (se inyectan desde /pages) -->
+    <div id="app"></div>
     <audio id="audio-engine"></audio>
 
-    <!-- Web Component de iconos -->
-    <script src="scripts/LermaIcon.js"></script>
-    <!-- Entry point -->
+    <!-- javascripts -->
+    <script src="scripts/icons.js"></script>
     <script type="module" src="scripts/app.js"></script>
 </body>
 </html>
