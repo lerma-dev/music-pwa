@@ -2,8 +2,7 @@
 .folder-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  overflow: auto;
-  gap: 12px;
+  gap: 10px;
 }
 
 .folder-card-grid {
@@ -12,85 +11,97 @@
   justify-content: space-between;
   position: relative;
   gap: 10px;
-  background: var(--card-bg);
-  padding: 20px;
-  border-radius: 22px;
-  border: 1px solid #222;
-  transition: transform 0.2s;
-  background: 0.2s;
+  background: var(--glass);
+  padding: 18px;
+  border-radius: 20px;
+  border: 1px solid var(--glass-border);
+  transition: transform 0.2s, background 0.2s, border-color 0.2s;
 }
 
 .folder-card-grid:active {
   transform: scale(0.95);
-  background: #252525;
+  background: var(--card-bg-hover);
+  border-color: rgba(167,139,250,0.2);
 }
 
 .folder-card-grid .f-icon {
-  font-size: 2rem;
-  margin-bottom: 5px;
+  font-size: 1.8rem;
+  margin-bottom: 6px;
+}
+
+.folder-card-grid .f-icon l-icon {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .folder-card-grid .f-name {
+  font-family: var(--font-display);
   font-weight: 600;
-  color: var(--accent);
-  font-size: 0.95rem;
+  font-size: 0.88rem;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .folder-card-grid .f-count {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--text-dim);
 }
 
-/* playlist card modal pantalla 1 */
+/* Playlist card modal */
 .playlist-card {
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 16px;
-  padding: 16px;
-  margin-top: 10px;
+  background: var(--glass);
+  border-radius: 14px;
+  padding: 14px;
+  margin-top: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  border: 1px solid transparent;
-  transition: all 0.3s ease;
+  border: 1px solid var(--glass-border);
+  transition: all 0.25s ease;
 }
 
 .playlist-card:hover {
-  background: rgba(242, 201, 161, 0.08);
-  border-color: rgba(242, 201, 161, 0.2);
+  background: rgba(167,139,250,0.07);
+  border-color: rgba(167,139,250,0.2);
 }
 
 .playlist-name {
   width: 100%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
   border-radius: 12px;
-  padding: 14px;
-  color: white;
+  padding: 13px 14px;
+  color: var(--text);
+  font-family: var(--font-main);
   margin-bottom: 15px;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
 .playlist-name:focus {
-  border-color: #f2c9a1;
-  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--accent);
+  background: rgba(167,139,250,0.06);
   outline: none;
 }
 
 .playlist-card span {
-  font-weight: 600;
-  color: #eee;
+  font-weight: 500;
+  color: var(--text);
+  font-size: 0.9rem;
 }
 
 .playlist-card small {
-  color: #f2c9a1;
-  font-size: 0.75rem;
-  background: rgba(242, 201, 161, 0.1);
-  padding: 4px 8px;
+  color: var(--accent);
+  font-size: 0.72rem;
+  background: rgba(167,139,250,0.12);
+  padding: 4px 9px;
   border-radius: 6px;
+  border: 1px solid rgba(167,139,250,0.2);
 }
 
 #existing-playlists-container {
@@ -99,28 +110,15 @@
   overflow-x: hidden;
   padding-right: 5px;
   margin-top: 15px;
-
   scrollbar-width: thin;
-  scrollbar-color: #555 transparent;
-}
-
-#existing-playlists-container::-webkit-scrollbar-track {
-  background: transparent;
+  scrollbar-color: rgba(167,139,250,0.3) transparent;
 }
 
 #existing-playlists-container::-webkit-scrollbar {
   width: 4px;
 }
-#existing-playlists-container::-webkit-scrollbar-thum {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-}
-
-#existing-playlists-container::-webkit-scrollbar {
-  width: 6px;
-}
 
 #existing-playlists-container::-webkit-scrollbar-thumb {
-  background: #555;
+  background: rgba(167,139,250,0.3);
   border-radius: 10px;
 }

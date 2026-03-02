@@ -14,6 +14,12 @@ body {
   color: var(--text);
   font-family: var(--font-main);
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
 }
 
 button {
@@ -36,8 +42,8 @@ l-icon {
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -47,8 +53,6 @@ l-icon {
 ::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb-bg);
   border-radius: 20px;
-  border: 2px solid transparent;
-  background-clip: content-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {

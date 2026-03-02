@@ -16,3 +16,6 @@
 @import "./components/cards.css";
 @import "./components/searchbar.css";
 @import "./components/buttons.css";
+
+/* RESPONSIVE */
+@import "./layouts/responsive.css";

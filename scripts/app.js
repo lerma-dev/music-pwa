@@ -3,6 +3,7 @@ import { loadFavorites } from './modules/components/favorites.js';
 import { loadFromDatabase } from './modules/db/libraryDB.js';
 import { saveLibraryToDB, openDB, storeName } from './modules/db/database.js';
 import agregarToast from './modules/components/toast.js';
+import { initSidebar } from './modules/ui/sidebar.js';
 
 window.agregarToast = agregarToast;
 
@@ -18,6 +19,9 @@ window.agregarToast = agregarToast;
 
     initPlayer();
     initFavorites();
+
+    // Sidebar desktop
+    initSidebar();
 
     await loadFavorites();
     loadFromDatabase();
