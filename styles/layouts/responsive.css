@@ -576,7 +576,6 @@
   }
 }
 
-/* ── DESKTOP ANCHO (1280px+) ── */
 @media (min-width: 1280px) {
   #app {
     grid-template-columns: 280px 1fr 360px;
@@ -596,8 +595,6 @@
   }
 }
 
-/* ── AJUSTE: Sidebar funcional con JS ── */
-/* Clase helper que el JS puede usar para marcar la vista activa */
 @media (min-width: 1024px) {
   [data-active-view="main"] ~ * .sidebar-nav-btn[data-view="main"],
   .sidebar-nav-btn.nav-active {
