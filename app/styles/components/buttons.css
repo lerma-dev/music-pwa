@@ -1,115 +1,115 @@
-/* --- ESTILOS DEL BOTÓN DE BORRAR CARPETA --- */
+/* --- BOTÓN ELIMINAR CARPETA --- */
 .delete-folder-btn {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: rgba(255, 69, 58, 0.2);
+  background: rgba(255, 69, 58, 0.1);
   color: #ff453a;
   border-radius: 8px;
   padding: 6px;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid rgba(255,69,58,0.15);
+  transition: background 0.2s;
 }
 
 .delete-folder-btn:active {
-  background: #ff453a;
-  color: white;
+  background: rgba(255, 69, 58, 0.3);
 }
 
-/* --- ESTILOS DEL BOTÓN DE FAVORITOS --- */
+/* --- BOTÓN FAVORITOS --- */
 .fav-btn {
   background: none;
   border: none;
-  padding: 2px;
-  margin-left: 10px;
+  padding: 4px;
+  margin-left: 8px;
   cursor: pointer;
   flex-shrink: 0;
 }
 
 .fav-btn l-icon {
-  font-size: 1.4rem;
-  color: var(--accent);
-  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  font-size: 1.3rem;
+  color: var(--text-muted);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.2s;
 }
 
 .fav-btn .is-fav {
-  color: #ff453a !important;
+  color: #ff4f7b !important;
 }
 
 .fav-btn:active l-icon {
-  transform: scale(1.4);
+  transform: scale(1.35);
 }
 
-/* Boton de cerrar */
+/* Botón cerrar */
 .close-btn {
   position: absolute;
   top: 15px;
   right: 20px;
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: var(--text-dim);
   cursor: pointer;
+  transition: color 0.2s;
 }
 
 .close-btn:hover {
   color: var(--accent);
 }
 
-/* Boton de favoritos de la pantalla 1 */
+/* Botón de favoritos pantalla 1 */
 .open-songs-favs {
-  color: #ff453a;
-  padding: 10px;
+  color: #ff4f7b;
+  padding: 9px;
   border-radius: 12px;
   transition: all 0.2s;
 }
 
-.open-songs-favs:hover {
-  background: #ff5f5f;
-  color: white;
+.open-songs-favs:active {
+  background: rgba(255,79,123,0.15);
   transform: scale(0.9);
 }
 
 .open-songs-favs l-icon {
   color: inherit;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 }
 
-/* Boton para ver y crear playlist */
+/* Botón playlist */
 .create-playlist {
   color: var(--accent);
-  padding: 10px;
+  padding: 9px;
   border-radius: 12px;
   transition: all 0.2s;
 }
 
-.create-playlist:hover {
-  background: #459752;
-  color: white;
+.create-playlist:active {
+  background: rgba(167,139,250,0.15);
   transform: scale(0.9);
 }
 
 .create-playlist l-icon {
   color: inherit;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 }
 
-/* Boton de borrar la base de datos */
-.clear-btn  {
-  color: var(--accent);
-  padding: 10px;
+/* Botón borrar DB */
+.clear-btn {
+  color: var(--text-muted);
+  padding: 9px;
   border-radius: 12px;
   transition: all 0.2s;
 }
 
 .clear-btn l-icon {
   color: inherit;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 }
 
-.clear-btn:hover {
-  background: #ff453a;
-  color: white;
+.clear-btn:active {
+  color: #ff453a;
+  background: rgba(255,69,58,0.12);
   transform: scale(0.9);
 }

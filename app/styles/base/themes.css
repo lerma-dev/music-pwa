@@ -1,25 +1,25 @@
-[data-theme="ligth"] {
-  --bg: #f5f5f5;
-  --card-bg: #ffffff;
-  --player-bg: #ebe0d5;
-  --text: #1a1a1a;
-  --text-dim: #666666;
-  --accent: #8b4513;
-  --linear-gradient: linear-gradient(to bottom, #ffffff, #e0e0e0);
-  
-  --scrollbar-thumb-bg: rgba(0, 0, 0, 0.2);
-  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.4);
+[data-theme="light"] {
+  --bg: #f4f2ff;
+  --bg-secondary: #ede9ff;
+  --card-bg: rgba(0,0,0,0.04);
+  --card-bg-hover: rgba(0,0,0,0.07);
+  --player-bg: #ede9ff;
+  --text: #1a1530;
+  --text-dim: rgba(40,30,80,0.5);
+  --text-muted: rgba(40,30,80,0.3);
+  --glass: rgba(0,0,0,0.04);
+  --glass-border: rgba(0,0,0,0.08);
+  --linear-gradient: linear-gradient(180deg, #ede9ff 0%, #f4f2ff 100%);
+  --scrollbar-thumb-bg: rgba(167, 139, 250, 0.3);
+  --scrollbar-thumb-hover: rgba(167, 139, 250, 0.55);
 }
 
 [data-theme="dark"] {
-  --bg: #000;
-  --card-bg: #1a1a1a;
-  --player-bg: #3d1409;
-  --text: #ffffff;
-  --text-dim: #999;
-  --accent: #f0c9a5;
-  --linear-gradient: linear-gradient(to bottom, #1a1a1a, #000);      
-  
-  -scrollbar-thumb-bg: rgba(255, 255, 255, 0.1);
-  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.3);
+  --bg: #08070f;
+  --bg-secondary: #0e0c1a;
+  --card-bg: rgba(255, 255, 255, 0.04);
+  --player-bg: #0d0b1c;
+  --text: #f0eeff;
+  --text-dim: rgba(220, 210, 255, 0.45);
+  --linear-gradient: linear-gradient(180deg, #130f22 0%, #08070f 100%);
 }

@@ -33,11 +33,11 @@
 }
 
 .toast.exito {
-  background: #559c43;
+  background: #4f3db4;
 }
 
 .toast.error {
-  background: #b43636;
+  background: #c2336e;
 }
 
 .toast .btn_close {

@@ -1,19 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+
 :root {
-  /* Colores por defecto */
-  --bg: #000;
-  --card-bg: #1a1a1a;
-  --player-bg: #3d1409;
-  --text: #ffffff;
-  --text-dim: #999;
-  --accent: #f0c9a5;
-  --linear-gradient: linear-gradient(to bottom, #1a1a1a, #000);
-  
-  /* Fuentes y tamaño */
-  --font-main: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --bg: #08070f;
+  --bg-secondary: #0e0c1a;
+  --card-bg: rgba(255, 255, 255, 0.04);
+  --card-bg-hover: rgba(255, 255, 255, 0.07);
+  --player-bg: #0d0b1c;
+
+  --text: #f0eeff;
+  --text-dim: rgba(220, 210, 255, 0.45);
+  --text-muted: rgba(220, 210, 255, 0.22);
+
+  --accent: #a78bfa;
+  --accent-2: #e879f9;
+  --accent-glow: rgba(167, 139, 250, 0.35);
+  --accent-gradient: linear-gradient(135deg, #a78bfa, #e879f9);
+  --accent-gradient-soft: linear-gradient(135deg, rgba(167,139,250,0.12), rgba(232,121,249,0.12));
+
+  --glass: rgba(255, 255, 255, 0.045);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-strong: rgba(167, 139, 250, 0.08);
+
+  --linear-gradient: linear-gradient(180deg, #130f22 0%, #08070f 100%);
+
+  --font-display: 'Syne', sans-serif;
+  --font-main: 'DM Sans', sans-serif;
+
   --border-radius: 20px;
+  --border-radius-sm: 12px;
+  --border-radius-lg: 28px;
   --sidebar-width: 250px;
-  
-  /*Scrollbar*/
-  --scrollbar-thumb-bg: rgba(255, 255, 255, 0.1);
-  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.3);
+
+  --scrollbar-thumb-bg: rgba(167, 139, 250, 0.15);
+  --scrollbar-thumb-hover: rgba(167, 139, 250, 0.35);
+
+  --shadow-sm: 0 2px 12px rgba(0,0,0,0.3);
+  --shadow-md: 0 8px 32px rgba(0,0,0,0.55);
+  --shadow-glow: 0 0 40px rgba(167, 139, 250, 0.18);
 }
