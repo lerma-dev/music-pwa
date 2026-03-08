@@ -11,7 +11,7 @@ window.agregarToast = agregarToast;
     // 1. Inyectar HTML de todas las vistas
     await loadViews();
 
-    const { initPlayer }    = await import('./modules/components/player.js');
+    const { initPlayer, togglePlay, playNext, playPrev }    = await import('./modules/components/player.js');
     const { initFavorites } = await import('./modules/components/favorites.js');
     await import('./modules/ui/views.js');
     await import('./modules/ui/modals.js');
@@ -40,4 +40,9 @@ window.agregarToast = agregarToast;
         await db.transaction(storeName, "readwrite").objectStore(storeName).delete("current_lib");
         location.reload();
     };
+
+    // Exponer funciones para Android MediaSession
+    window.togglePlay = togglePlay;
+    window.playNext   = playNext;
+    window.playPrev   = playPrev;
 })();
