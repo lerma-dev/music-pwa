@@ -156,7 +156,9 @@ export function playSong(i) {
 
         // ✅ Android bridge (solo se ejecuta si está en la app, no afecta la web)
         if (window.AndroidMedia) {
-            fetch('assets/icons/icon-512.png')
+            const iconUrl = window.location.origin + window.location.pathname + 'assets/icons/icon-512.png';
+            
+            fetch(iconUrl)
                 .then(r => r.blob())
                 .then(blob => {
                     const reader = new FileReader();
@@ -170,6 +172,15 @@ export function playSong(i) {
                         );
                     };
                     reader.readAsDataURL(blob);
+                })
+                .catch(() => {
+                    // Si falla la imagen, envía sin artwork
+                    AndroidMedia.updateMetadata(
+                        song.title,
+                        song.artist,
+                        document.getElementById('current-folder-title').textContent,
+                        null
+                    );
                 });
         }
     }
