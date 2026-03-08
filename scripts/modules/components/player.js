@@ -156,11 +156,21 @@ export function playSong(i) {
 
         // ✅ Android bridge (solo se ejecuta si está en la app, no afecta la web)
         if (window.AndroidMedia) {
-            AndroidMedia.updateMetadata(
-                song.title,
-                song.artist,
-                document.getElementById('current-folder-title').textContent
-            );
+            fetch('assets/icons/icon-512.png')
+                .then(r => r.blob())
+                .then(blob => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        const base64 = reader.result.split(',')[1];
+                        AndroidMedia.updateMetadata(
+                            song.title,
+                            song.artist,
+                            document.getElementById('current-folder-title').textContent,
+                            base64
+                        );
+                    };
+                    reader.readAsDataURL(blob);
+                });
         }
     }
 
