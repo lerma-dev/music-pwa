@@ -156,32 +156,42 @@ export function playSong(i) {
 
         // ✅ Android bridge (solo se ejecuta si está en la app, no afecta la web)
         if (window.AndroidMedia) {
-            const iconUrl = window.location.origin + window.location.pathname + 'assets/icons/icon-512.png';
-            
-            fetch(iconUrl)
-                .then(r => r.blob())
-                .then(blob => {
-                    const reader = new FileReader();
-                    reader.onloadend = () => {
-                        const base64 = reader.result.split(',')[1];
-                        AndroidMedia.updateMetadata(
-                            song.title,
-                            song.artist,
-                            document.getElementById('current-folder-title').textContent,
-                            base64
-                        );
-                    };
-                    reader.readAsDataURL(blob);
-                })
-                .catch(() => {
-                    // Si falla la imagen, envía sin artwork
+            // Intenta obtener la imagen sin fetch usando un canvas
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = () => {
+                try {
+                    const canvas = document.createElement('canvas');
+                    canvas.width  = img.width;
+                    canvas.height = img.height;
+                    canvas.getContext('2d').drawImage(img, 0, 0);
+                    const base64 = canvas.toDataURL('image/png').split(',')[1];
+                    AndroidMedia.updateMetadata(
+                        song.title,
+                        song.artist,
+                        document.getElementById('current-folder-title').textContent,
+                        base64
+                    );
+                } catch (e) {
+                    // Si falla el canvas, envía sin imagen
                     AndroidMedia.updateMetadata(
                         song.title,
                         song.artist,
                         document.getElementById('current-folder-title').textContent,
                         null
                     );
-                });
+                }
+            };
+            img.onerror = () => {
+                // Sin imagen
+                AndroidMedia.updateMetadata(
+                    song.title,
+                    song.artist,
+                    document.getElementById('current-folder-title').textContent,
+                    null
+                );
+            };
+            img.src = 'assets/icons/icon-512.png';
         }
     }
 
