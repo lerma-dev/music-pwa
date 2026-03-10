@@ -5,6 +5,7 @@ export const state = {
     selectedSong: null,
     currentQueue: [],
     currentIndex: -1,
+    history: [],
     playMode: 'list',
 
     // Virtual scroll

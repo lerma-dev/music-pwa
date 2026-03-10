@@ -1,9 +1,6 @@
 import { state } from '../utils/state.js';
 import { applyMarqueeIfNeeded } from '../utils/helpers.js';
-
-// --- VISUALIZADOR ---
-let audioCtx, analyser, source;
-let canvas, canvasCtx;
+import { initVisualizer } from './visualizer.js';
 
 // --- REFERENCIAS DOM (se asignan en initPlayer, después de loadViews) ---
 let audio, trackName, fullTrackName, artistName, FullArtistName;
@@ -25,16 +22,14 @@ export function initPlayer() {
     nextBtn = document.getElementById('next-btn');
     fullNextBtn = document.getElementById('full-next-btn');
     fullPrevBtn = document.getElementById('full-prev-btn');
-    canvas = document.getElementById('visualizer');
-    canvasCtx = canvas.getContext('2d');
 
     // Botones
-    playBtn.onclick     = (e) => { e.stopPropagation(); togglePlay(); };
-    nextBtn.onclick     = (e) => { e.stopPropagation(); playNext(); };
+    playBtn.onclick = (e) => { e.stopPropagation(); togglePlay(); };
+    nextBtn.onclick = (e) => { e.stopPropagation(); playNext(); };
     fullNextBtn.onclick = playNext;
     fullPlayBtn.onclick = togglePlay;
     fullPrevBtn.onclick = playPrev;
-    audio.onended       = playNext;
+    audio.onended = playNext;
 
     // Progreso
     audio.ontimeupdate = () => {
@@ -67,57 +62,15 @@ export function initPlayer() {
     };
 }
 
-// --- VISUALIZADOR ---
-export function initVisualizer() {
-    if (audioCtx) return;
-    audioCtx = new (window.AudioContext || window.AudioContext)();
-    analyser = audioCtx.createAnalyser();
-    source   = audioCtx.createMediaElementSource(audio);
-    source.connect(analyser);
-    analyser.connect(audioCtx.destination);
-    analyser.fftSize = 64;
-    draw();
-}
-
-function draw() {
-    requestAnimationFrame(draw);
-    const bufferLength = analyser.frequencyBinCount;
-    const dataArray    = new Uint8Array(bufferLength);
-    analyser.getByteFrequencyData(dataArray);
-    canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-    const barWidth = (canvas.width / bufferLength) * 2.5;
-    let x = 0;
-    for (let i = 0; i < bufferLength; i++) {
-        let barHeight = dataArray[i] / 2;
-        // Gradiente por barra: violeta → rosa
-        const ratio = i / bufferLength;
-        const r = Math.round(167 + (232 - 167) * ratio);
-        const g = Math.round(139 + (121 - 139) * ratio);
-        const b = Math.round(250 + (249 - 250) * ratio);
-        canvasCtx.fillStyle = `rgba(${r}, ${g}, ${b}, ${0.3 + (barHeight / 128) * 0.7})`;
-        // Barras redondeadas en la punta
-        const bx = x;
-        const by = canvas.height - barHeight;
-        const bw = Math.max(barWidth - 1, 1);
-        const bh = barHeight;
-        const radius = Math.min(4, bw / 2);
-        canvasCtx.beginPath();
-        canvasCtx.moveTo(bx + radius, by);
-        canvasCtx.lineTo(bx + bw - radius, by);
-        canvasCtx.quadraticCurveTo(bx + bw, by, bx + bw, by + radius);
-        canvasCtx.lineTo(bx + bw, by + bh);
-        canvasCtx.lineTo(bx, by + bh);
-        canvasCtx.lineTo(bx, by + radius);
-        canvasCtx.quadraticCurveTo(bx, by, bx + radius, by);
-        canvasCtx.closePath();
-        canvasCtx.fill();
-        x += barWidth + 1;
-    }
-}
-
 // --- REPRODUCCIÓN ---
 export function playSong(i) {
     if (i < 0 || i >= state.currentQueue.length) return;
+
+    // Solo agregamos al historial si la canción es diferente a la actual
+    if (state.currentIndex !== -1 && state.currentIndex !== i) {
+        state.history.push(state.currentIndex);
+    }
+
     state.currentIndex = i;
     const song = state.currentQueue[i];
 
@@ -125,14 +78,14 @@ export function playSong(i) {
     audio.src = URL.createObjectURL(song.file);
     audio.play().catch(e => console.log("Error:", e));
 
-    trackName.textContent      = song.title;
-    fullTrackName.textContent  = song.title;
-    artistName.textContent     = song.artist;
+    trackName.textContent = song.title;
+    fullTrackName.textContent = song.title;
+    artistName.textContent = song.artist;
     FullArtistName.textContent = song.artist;
 
-    const defaultIcon      = document.getElementById('default-icon');
+    const defaultIcon = document.getElementById('default-icon');
     const visualizerCanvas = document.getElementById('visualizer');
-    if (defaultIcon)      defaultIcon.style.display      = 'none';
+    if (defaultIcon) defaultIcon.style.display = 'none';
     if (visualizerCanvas) visualizerCanvas.style.display = 'block';
     initVisualizer();
 
@@ -170,16 +123,97 @@ export function playSong(i) {
     updatePlayButtons(true);
 }
 
+function updateUI(song) {
+    // 1. Actualizar textos (Mini reproductor y Full)
+    trackName.textContent = song.title;
+    fullTrackName.textContent = song.title;
+    artistName.textContent = song.artist;
+    FullArtistName.textContent = song.artist;
+
+    // 2. Gestionar Visualizador vs Icono
+    const defaultIcon = document.getElementById('default-icon');
+    const visualizerCanvas = document.getElementById('visualizer');
+    
+    if (defaultIcon) defaultIcon.style.display = 'none';
+    if (visualizerCanvas) visualizerCanvas.style.display = 'block';
+    
+    // Reiniciar visualizador si es necesario
+    initVisualizer();
+
+    // 3. Aplicar efecto de movimiento al texto si es muy largo
+    requestAnimationFrame(() => {
+        applyMarqueeIfNeeded(trackName);
+        applyMarqueeIfNeeded(fullTrackName);
+    });
+
+    // 4. Actualizar Metadatos del Sistema (Notificaciones/Pantalla de bloqueo)
+    if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: song.title,
+            artist: song.artist,
+            album: document.getElementById('current-folder-title')?.textContent || "Mi Música",
+            artwork: [{ src: 'assets/icons/icon-512.png', sizes: '512x512', type: 'image/png' }]
+        });
+
+        // ✅ Android bridge (solo se ejecuta si está en la app, no afecta la web)
+        if (window.AndroidMedia) {
+            AndroidMedia.updateMetadata(
+                song.title,
+                song.artist,
+                document.getElementById('current-folder-title').textContent
+            );
+        }
+    }
+}
+
 export function playNext() {
-    const next = (state.playMode === 'shuffle')
-        ? Math.floor(Math.random() * state.currentQueue.length)
-        : (state.currentIndex + 1) % state.currentQueue.length;
-    playSong(next);
+    console.log("Cambiando canción. Modo actual:", state.playMode);
+
+    // Si no hay canciones en la cola, no hacemos nada
+    if (state.currentQueue.length === 0) return;
+
+    let nextIndex;
+
+    if (state.playMode === 'repeat-one') {
+        // Mantiene la misma canción
+        nextIndex = state.currentIndex;
+    } 
+    else if (state.playMode === 'shuffle') {
+        // Elige una al azar que no sea la actual (si hay más de una)
+        nextIndex = Math.floor(Math.random() * state.currentQueue.length);
+        
+        // Opcional: Evitar que salga la misma si hay varias canciones
+        if (state.currentQueue.length > 1 && nextIndex === state.currentIndex) {
+            nextIndex = (nextIndex + 1) % state.currentQueue.length;
+        }
+    } 
+    else {
+        // Modo 'list' (por defecto)
+        nextIndex = (state.currentIndex + 1) % state.currentQueue.length;
+    }
+
+    playSong(nextIndex);
 }
 
 export function playPrev() {
-    const prev = (state.currentIndex - 1 + state.currentQueue.length) % state.currentQueue.length;
-    playSong(prev);
+    if (state.history.length > 0) {
+        // Sacamos el último índice del historial
+        const lastIndex = state.history.pop();
+        
+        const song = state.currentQueue[lastIndex];
+        state.currentIndex = lastIndex;
+        
+        if (audio.src.startsWith('blob:')) URL.revokeObjectURL(audio.src);
+        audio.src = URL.createObjectURL(song.file);
+        audio.play();
+
+        // Actualizar UI (puedes llamar a una función que refresque los textos)
+        updateUI(song); 
+    } else {
+        // Si no hay historial, se comporta normal (va a la anterior de la lista)
+        const prev = (state.currentIndex - 1 + state.currentQueue.length) % state.currentQueue.length;
+        playSong(prev);
+    }
 }
 
 export function togglePlay() {
@@ -191,6 +225,25 @@ export function togglePlay() {
     updatePlayButtons(!audio.paused);
     document.getElementById('default-icon').style.display = audio.paused ? 'block' : 'none';
     document.getElementById('visualizer').style.display   = audio.paused ? 'none'  : 'block';
+}
+
+export function mode() {
+    const icon = document.getElementById('mode-icon');
+    
+    if (state.playMode === 'list') {
+        state.playMode = 'shuffle';
+        icon.setAttribute('name', 'shuffle');
+    } 
+    else if (state.playMode === 'shuffle') {
+        state.playMode = 'repeat-one';
+        icon.setAttribute('name', 'repeat-one'); // o 'infinite' dependiendo de tu pack
+    } 
+    else {
+        state.playMode = 'list';
+        icon.setAttribute('name', 'repeat');
+    }
+    
+    console.log("Nuevo modo establecido:", state.playMode);
 }
 
 export function updatePlayButtons(isPlaying) {

@@ -1,14 +1,11 @@
 /* ── TABLET (768px+) ── */
 @media (min-width: 768px) {
-
-  /* Layout raíz */
   body {
     max-width: 900px;
     margin: 0 auto;
     min-height: 100vh;
   }
 
-  /* App wrapper */
   #app {
     border-left: 1px solid var(--glass-border);
     border-right: 1px solid var(--glass-border);
@@ -16,7 +13,6 @@
     position: relative;
   }
 
-  /* Header más espacioso */
   .main-header {
     padding: 26px 28px 20px;
   }
@@ -25,7 +21,6 @@
     font-size: 1.5rem;
   }
 
-  /* Import card más ancha */
   .main-import-card {
     padding: 22px 28px;
     gap: 20px;
@@ -170,8 +165,6 @@
 
 /* ── DESKTOP (1024px+) ── */
 @media (min-width: 1024px) {
-
-  /* Reset max-width del body */
   body {
     max-width: 100%;
     background: #050410;
@@ -370,12 +363,10 @@
   }
 
   /* ── CONTENIDO CENTRAL ── */
-  /* Ocultar headers originales en desktop (los reemplaza el sidebar) */
   .main-header {
     display: none;
   }
 
-  /* Todas las secciones ocupan la columna central */
   #view-main,
   #view-detail,
   #view-songs-favs,
@@ -389,8 +380,6 @@
     mask-image: linear-gradient(to bottom, black 0%, black 92%, transparent 100%);
     -webkit-mask-image: linear-gradient(to bottom, black 0%, black 92%, transparent 100%);
   }
-
-  /* Padding interno para el contenido central */
   #view-main .content,
   #view-detail .content,
   #view-songs-favs .content,
@@ -399,7 +388,6 @@
     padding: 0 24px;
   }
 
-  /* Título de sección en desktop */
   .desktop-section-title {
     font-family: var(--font-display);
     font-size: 1.9rem;
@@ -409,42 +397,34 @@
     color: var(--text);
   }
 
-  /* Import card en contenido central (ocultar en desktop, está en sidebar) */
   .import-section {
     display: none;
   }
 
-  /* Grid de carpetas: 3 columnas en desktop */
   .folder-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 14px;
   }
 
-  /* Section divider sin padding top extra */
   .section-divider {
     padding-top: 8px;
   }
-
-  /* Detail header en desktop */
   .detail-header {
     padding: 32px 24px 24px;
     background: linear-gradient(180deg, rgba(167,139,250,0.08) 0%, transparent 100%);
   }
 
-  /* Search bar */
   .search-container {
     margin: 8px 0 18px;
     border-radius: 14px;
   }
 
-  /* Song items más cómodos */
   .song-item {
     padding: 13px 18px;
     margin: 5px 0;
     border-radius: 16px;
   }
 
-  /* Lista sin padding lateral (ya está en .content) */
   .song-list {
     padding: 0;
   }
@@ -453,14 +433,16 @@
     margin: 5px 0;
   }
 
-  /* Mini-player OCULTO en desktop (el reproductor es el panel derecho) */
   .mini-player {
     display: none;
   }
 
-  /* Sin padding extra para el mini player */
   .list-container {
     padding-bottom: 24px;
+  }
+
+  .back-circle-btn {
+    display: none;
   }
 
   /* ── PANEL REPRODUCTOR DERECHO ── */
@@ -604,7 +586,6 @@
   }
 }
 
-/* ── Títulos de sección en desktop via CSS ── */
 @media (min-width: 1024px) {
   #view-main::before {
     content: 'Tu Biblioteca';
@@ -627,24 +608,20 @@
     padding: 0 24px 40px;
   }
 
-  /* Section divider less top padding */
   #view-main .section-divider {
     padding-top: 12px;
   }
 
-  /* Fondo decorativo sutil en desktop para la columna central */
   #view-main, #view-detail, #view-songs-favs, #view-playlist, #view-playlist-full {
     background: linear-gradient(180deg, rgba(167,139,250,0.03) 0%, transparent 300px);
   }
 
-  /* Song list sin margen lateral extra en desktop */
   #view-detail .song-item,
   #view-songs-favs .song-item,
   #view-playlist-full .song-item {
     margin: 5px 0;
   }
 
-  /* Hover en song items en desktop */
   .song-item {
     transition: background 0.15s, border-color 0.15s, transform 0.15s;
   }
@@ -655,7 +632,6 @@
     cursor: pointer;
   }
 
-  /* Folder cards hover en desktop */
   .folder-card-grid {
     transition: transform 0.2s, background 0.2s, border-color 0.2s, box-shadow 0.2s;
     cursor: pointer;
@@ -668,7 +644,6 @@
     box-shadow: 0 8px 24px rgba(0,0,0,0.3);
   }
 
-  /* Nav buttons hover state mejorado en desktop */
   .sidebar-nav-btn:hover {
     background: rgba(255,255,255,0.05);
     color: var(--text);

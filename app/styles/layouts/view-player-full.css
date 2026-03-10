@@ -106,6 +106,7 @@
   z-index: 2;
   background: var(--accent-gradient);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -214,8 +215,8 @@
   transition: background 0.2s, color 0.2s, transform 0.15s;
 }
 
-#full-prev-btn:active,
-#full-next-btn:active {
+#full-prev-btn:hover,
+#full-next-btn:hover {
   transform: scale(0.9);
   background: var(--glass-strong);
 }

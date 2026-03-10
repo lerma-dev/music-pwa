@@ -1,6 +1,3 @@
-// Sidebar para desktop — se inyecta dinámicamente en 1024px+
-// y sincroniza con las funciones de navegación existentes
-
 export function initSidebar() {
   if (window.innerWidth < 1024) return;
 
