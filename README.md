@@ -25,18 +25,29 @@ Un reproductor de música web de alto rendimiento diseñado para gestionar libre
 
 ## 📦 Instalación Local
 
-1. Clona este repositorio en tu servidor local (XAMPP/htdocs o similar):
+1. Clona el repositorio en tu espacio de trabajo:
   ```bash
   git clone https://github.com/lerma-dev/music-pwa.git
   cd music-pwa
   ```
-2. Inicia el servidor
-  - **Usando el script para `Windows`**
+2. Inicia el servidor según tu sistema operativo:
+  - **🪟 Windows (Git Bash / CMD)**
   ```bash
   start_app
   ```
-  o 
-  - **Usando el comando de Python**
+  O usa directamente el script de Bash (recomendado para VS Code):
+  ```bash
+  ./server_start.sh
+  ```
+  
+  - **🐧 Linux / macOS**
+  Asegúrate de dar permisos de ejecución la primera vez:
+  ```bash
+  chmod +x server_start.sh
+  ./server_start.sh
+  ```
+3. Método Manual (Python)
+  - **Si prefieres no usar scripts, ejecuta el servidor nativo:**
   *En windows
   ```bash
   py -m http.server 80 --directory app
@@ -47,5 +58,6 @@ Un reproductor de música web de alto rendimiento diseñado para gestionar libre
   ```
 
 3. Accede a la App:
-  Abre tu navegador en http://localhost. 
-  Si el puerto 80 está ocupado, el  `script` intentará usar el http://localhost:8080.
+  Abre tu navegador en http://localhost.
+
+    Nota: El script detectará automáticamente si el puerto 80 está ocupado y, de ser así, lanzará la app en http://localhost:8080.  
