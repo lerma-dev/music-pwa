@@ -26,8 +26,5 @@ echo -e "Carpeta: /app"
 echo ""
 echo -e "Apagar servidor: ${YELLOW}Ctrl + C${RESET}"
 
-# Abre el navegador predeterminado (usamos 'start' de Windows)
-start "$URL"
-
 # Inicia el servidor de Python
 py -m http.server "$PUERTO" --directory app

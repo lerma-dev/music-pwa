@@ -16,8 +16,6 @@ echo URL:%ESC%[92m %URL% %ESC%[0m
 echo Carpeta: /app
 echo.
 echo Apagar servidor %ESC%[93m ctrl + c %ESC%[0m
-:: Abre el navegador predeterminado
-start %URL%
 
 :: Inicia el servidor de Python
 py -m http.server %PUERTO% --directory app
