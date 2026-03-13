@@ -1,6 +1,8 @@
 import { state } from '../utils/state.js';
 import { applyMarqueeIfNeeded } from '../utils/helpers.js';
+import { setMode, getStoredMode, syncModeIcon } from '../utils/mode.js';
 import { initVisualizer } from './visualizer.js';
+
 
 // --- REFERENCIAS DOM (se asignan en initPlayer, después de loadViews) ---
 let audio, trackName, fullTrackName, artistName, FullArtistName;
@@ -167,28 +169,22 @@ function updateUI(song) {
 }
 
 export function playNext() {
-    console.log("Cambiando canción. Modo actual:", state.playMode);
-
     // Si no hay canciones en la cola, no hacemos nada
     if (state.currentQueue.length === 0) return;
 
     let nextIndex;
 
     if (state.playMode === 'repeat-one') {
-        // Mantiene la misma canción
         nextIndex = state.currentIndex;
     } 
     else if (state.playMode === 'shuffle') {
-        // Elige una al azar que no sea la actual (si hay más de una)
         nextIndex = Math.floor(Math.random() * state.currentQueue.length);
-        
-        // Opcional: Evitar que salga la misma si hay varias canciones
+
         if (state.currentQueue.length > 1 && nextIndex === state.currentIndex) {
             nextIndex = (nextIndex + 1) % state.currentQueue.length;
         }
     } 
     else {
-        // Modo 'list' (por defecto)
         nextIndex = (state.currentIndex + 1) % state.currentQueue.length;
     }
 
@@ -207,10 +203,10 @@ export function playPrev() {
         audio.src = URL.createObjectURL(song.file);
         audio.play();
 
-        // Actualizar UI (puedes llamar a una función que refresque los textos)
+        // Actualizar UI
         updateUI(song); 
     } else {
-        // Si no hay historial, se comporta normal (va a la anterior de la lista)
+        // Si no hay historial, se comporta normal
         const prev = (state.currentIndex - 1 + state.currentQueue.length) % state.currentQueue.length;
         playSong(prev);
     }
@@ -228,6 +224,8 @@ export function togglePlay() {
 }
 
 export function mode() {
+    state.playMode = getStoredMode();
+    syncModeIcon();
     const icon = document.getElementById('mode-icon');
     
     if (state.playMode === 'list') {
@@ -236,13 +234,13 @@ export function mode() {
     } 
     else if (state.playMode === 'shuffle') {
         state.playMode = 'repeat-one';
-        icon.setAttribute('name', 'repeat-one'); // o 'infinite' dependiendo de tu pack
+        icon.setAttribute('name', 'repeat-one'); 
     } 
     else {
         state.playMode = 'list';
         icon.setAttribute('name', 'repeat');
     }
-    
+    setMode(state.playMode);
     console.log("Nuevo modo establecido:", state.playMode);
 }
 

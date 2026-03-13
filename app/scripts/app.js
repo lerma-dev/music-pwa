@@ -4,6 +4,10 @@ import { loadFromDatabase } from './modules/db/libraryDB.js';
 import { saveLibraryToDB, openDB, storeName } from './modules/db/database.js';
 import agregarToast from './modules/components/toast.js';
 import { initSidebar } from './modules/ui/sidebar.js';
+import { applyStoredTheme } from './modules/utils/theme.js';
+
+// Aplicar tema guardado antes de pintar la UI
+applyStoredTheme();
 
 window.agregarToast = agregarToast;
 (async () => {
@@ -17,9 +21,12 @@ window.agregarToast = agregarToast;
     await import('./modules/ui/modals.js');
     await import('./modules/components/playlists.js');
 
+    const { initSettings } = await import('./modules/components/settings.js');
+
     initPlayer();
     initFavorites();
     initVisualizerVar();
+    initSettings();
     // Sidebar desktop
     initSidebar();
     // Cargar database

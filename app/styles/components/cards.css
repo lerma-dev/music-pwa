@@ -32,6 +32,7 @@
 .folder-card-grid .f-icon l-icon {
   background: var(--accent-gradient);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -41,6 +42,7 @@
   font-size: 0.88rem;
   background: var(--accent-gradient);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   white-space: nowrap;
   overflow: hidden;

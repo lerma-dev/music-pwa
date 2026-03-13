@@ -5,21 +5,53 @@
   --card-bg-hover: rgba(0,0,0,0.07);
   --player-bg: #ede9ff;
   --text: #1a1530;
-  --text-dim: rgba(40,30,80,0.5);
-  --text-muted: rgba(40,30,80,0.3);
+  --text-dim: rgba(40,30,80,0.55);
+  --text-muted: rgba(40,30,80,0.35);
+
   --glass: rgba(0,0,0,0.04);
-  --glass-border: rgba(0,0,0,0.08);
+  --glass-border: rgba(40,30,80,0.1);
+  --glass-strong: rgba(167, 139, 250, 0.12);
+
   --linear-gradient: linear-gradient(180deg, #ede9ff 0%, #f4f2ff 100%);
+
   --scrollbar-thumb-bg: rgba(167, 139, 250, 0.3);
   --scrollbar-thumb-hover: rgba(167, 139, 250, 0.55);
+
+  --shadow-sm: 0 2px 12px rgba(100,80,180,0.1);
+  --shadow-md: 0 8px 32px rgba(100,80,180,0.15);
+  --shadow-glow: 0 0 40px rgba(167, 139, 250, 0.2);
+
+  /* Mini player */
+  --mini-player-bg: rgba(237, 233, 255, 0.92);
+
+  /* Modal */
+  --modal-bg: linear-gradient(145deg, #ede9ff, #e5e0ff);
+  --modal-overlay: rgba(20, 15, 50, 0.45);
+  --settings-overlay: rgba(100, 80, 160, 0.25);
 }
 
 [data-theme="dark"] {
   --bg: #08070f;
   --bg-secondary: #0e0c1a;
   --card-bg: rgba(255, 255, 255, 0.04);
+  --card-bg-hover: rgba(255, 255, 255, 0.07);
   --player-bg: #0d0b1c;
   --text: #f0eeff;
   --text-dim: rgba(220, 210, 255, 0.45);
+  --text-muted: rgba(220, 210, 255, 0.22);
+
+  --glass: rgba(255, 255, 255, 0.045);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-strong: rgba(167, 139, 250, 0.08);
+
   --linear-gradient: linear-gradient(180deg, #130f22 0%, #08070f 100%);
+
+  --shadow-sm: 0 2px 12px rgba(0,0,0,0.3);
+  --shadow-md: 0 8px 32px rgba(0,0,0,0.55);
+  --shadow-glow: 0 0 40px rgba(167, 139, 250, 0.18);
+
+  --mini-player-bg: rgba(13, 11, 28, 0.85);
+  --modal-bg: linear-gradient(145deg, #1a1735, #0f0d20);
+  --modal-overlay: rgba(4, 3, 12, 0.75);
+  --settings-overlay: rgba(0, 0, 0, 0.6);
 }

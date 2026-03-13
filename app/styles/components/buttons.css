@@ -113,3 +113,16 @@
   background: rgba(255,69,58,0.12);
   transform: scale(0.9);
 }
+
+/* Botón de Ajuste */
+.settings-btn {
+  color: var(--accent);
+  padding: 9px;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+
+.settings-btn l-icon {
+  color: inherit;
+  font-size: 1.4rem;
+}

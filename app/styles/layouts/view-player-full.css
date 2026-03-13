@@ -43,7 +43,7 @@
 }
 
 .close-full {
-  background: rgba(255,255,255,0.07);
+  background: var(--glass);
   border: 1px solid var(--glass-border);
   color: var(--text-dim);
   font-size: 1.3rem;
@@ -150,7 +150,7 @@
 #full-progress-container {
   width: 100%;
   height: 4px;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--glass-border);
   border-radius: 50px;
   cursor: pointer;
   position: relative;
@@ -204,7 +204,7 @@
 
 #full-prev-btn,
 #full-next-btn {
-  background: rgba(255,255,255,0.06);
+  background: var(--glass);
   border: 1px solid var(--glass-border);
   color: var(--text-dim);
   font-size: 1.5rem;
@@ -246,7 +246,7 @@
 }
 
 .full-controls button l-icon {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
 }
 
 /* Controles extra */
@@ -258,15 +258,18 @@
 }
 
 .mode-btn {
-  background: rgba(255,255,255,0.05);
+  background: var(--glass);
   border: 1px solid var(--glass-border);
   color: var(--text-muted);
-  font-size: 1.3rem;
-  width: 44px;
-  height: 44px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   cursor: pointer;
   transition: background 0.2s, color 0.2s, transform 0.15s;
+}
+
+.mode-btn l-icon {
+  font-size: 2.5rem;
 }
 
 .mode-btn:active,
@@ -275,8 +278,4 @@
   border-color: var(--accent);
   color: var(--accent);
   transform: scale(0.95);
-}
-
-.mode-btn l-icon {
-  font-size: 1.2rem;
 }

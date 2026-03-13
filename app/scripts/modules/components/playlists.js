@@ -219,10 +219,36 @@ export async function playSongFromPlaylist(playlistId, index) {
 
     request.onsuccess = () => {
         const playlist = request.result;
-        if (playlist && playlist.data && playlist.data.song) {
-            state.currentQueue = playlist.data.song;
-            setTimeout(() => { playSong(index); }, 0);
+        if (!playlist?.data?.song) return;
+
+        // Índice plano de la librería por título para re-vincular el File
+        const libraryFlat = {};
+        for (const folder in state.library) {
+            state.library[folder].forEach(song => {
+                libraryFlat[song.title] = song;
+            });
         }
+
+        // Enriquecer cada canción con el File real si fue importada sin él
+        const enriched = playlist.data.song.map(song => {
+            if (song.file) return song;
+            const match = libraryFlat[song.title];
+            return match ? { ...match } : song;
+        });
+
+        // Si la canción pedida no tiene file, avisar y no reproducir
+        if (!enriched[index]?.file) {
+            window.agregarToast({
+                tipo: 'Error',
+                titulo: 'Canción no disponible',
+                descripcion: 'Importa la carpeta de música para poder reproducir esta canción.',
+                autoClose: false,
+            });
+            return;
+        }
+
+        state.currentQueue = enriched;
+        setTimeout(() => { playSong(index); }, 0);
     };
 }
 

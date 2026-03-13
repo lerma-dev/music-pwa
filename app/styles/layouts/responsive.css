@@ -1,3 +1,7 @@
+.app-sidebar {
+  display: none;
+}
+
 /* ── TABLET (768px+) ── */
 @media (min-width: 768px) {
   body {
@@ -40,7 +44,6 @@
     font-size: 1.05rem;
   }
 
-  /* Grid de carpetas: 3 columnas en tablet */
   .folder-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 14px;
@@ -51,7 +54,6 @@
     border-radius: 22px;
   }
 
-  /* Lista de canciones más espaciosa */
   .song-item {
     padding: 14px 20px;
     margin: 6px 16px;
@@ -72,7 +74,6 @@
     font-size: 0.82rem;
   }
 
-  /* Header detail */
   .detail-header {
     padding: 50px 28px 32px;
   }
@@ -81,14 +82,11 @@
     font-size: 2.2rem;
   }
 
-  /* Search */
   .search-container {
     margin: 12px 18px 20px;
     border-radius: 16px;
     padding: 0 18px;
   }
-
-  /* Mini player */
   .mini-player {
     border-radius: 20px 20px 0 0;
   }
@@ -109,12 +107,10 @@
     height: 48px !important;
   }
 
-  /* Sección import */
   .import-section {
     margin-bottom: 4px;
   }
 
-  /* Modal más ancho */
   .modal {
     padding: 28px;
   }
@@ -129,7 +125,6 @@
     font-size: 1.6rem;
   }
 
-  /* Reproductor full tablet */
   .full-content {
     padding: 16px 48px 40px;
   }
@@ -162,32 +157,29 @@
   }
 }
 
-
-/* ── DESKTOP (1024px+) ── */
 @media (min-width: 1024px) {
   body {
     max-width: 100%;
-    background: #050410;
+    background: var(--bg);
   }
 
-  /* Layout de 3 columnas: sidebar | contenido | player */
   #app {
     display: grid;
     grid-template-columns: 260px 1fr 340px;
     grid-template-rows: 100vh;
     border: none;
-    max-width: 1440px;
-    margin: 0 auto;
+    width: 100%;     
+    max-width: none;    
+    margin: 0;          
     position: relative;
     height: 100vh;
     overflow: hidden;
   }
 
-  /* ── SIDEBAR IZQUIERDO ── */
   .app-sidebar {
     grid-column: 1;
     grid-row: 1;
-    background: rgba(13, 11, 28, 0.95);
+    background: var(--bg-secondary);
     border-right: 1px solid var(--glass-border);
     display: flex;
     flex-direction: column;
@@ -356,13 +348,12 @@
     color: var(--text);
   }
 
-  .sidebar-icon-btn.danger:hover {
-    color: #ff453a;
-    background: rgba(255,69,58,0.1);
-    border-color: rgba(255,69,58,0.2);
+  .sidebar-icon-btn.setting:hover {
+    color: #a83cf0;
+    background: rgba(239, 58, 255, 0.1);
+    border-color: rgba(136, 28, 224, 0.2);
   }
 
-  /* ── CONTENIDO CENTRAL ── */
   .main-header {
     display: none;
   }
@@ -445,14 +436,13 @@
     display: none;
   }
 
-  /* ── PANEL REPRODUCTOR DERECHO ── */
   #view-player-full {
     grid-column: 3;
     grid-row: 1;
     position: relative !important;
     transform: none !important;
     transition: none !important;
-    background: rgba(13, 11, 28, 0.95);
+    background: var(--bg-secondary);
     border-left: 1px solid var(--glass-border);
     height: 100vh;
     overflow: hidden;
@@ -461,12 +451,10 @@
     z-index: 1 !important;
   }
 
-  /* Ocultar botón de cerrar en desktop */
   .close-full {
     display: none;
   }
 
-  /* Contenido del reproductor desktop */
   .full-content {
     height: 100%;
     padding: 40px 28px 36px;
@@ -474,14 +462,12 @@
     gap: 28px;
   }
 
-  /* Artwork más grande en panel derecho */
   .full-album-art {
     width: 240px;
     height: 240px;
     border-radius: 24px;
   }
 
-  /* Info alineada a la izquierda */
   .full-info {
     text-align: left;
     width: 100%;
@@ -496,12 +482,10 @@
     font-size: 0.9rem;
   }
 
-  /* Progreso */
   .full-progress {
     width: 100%;
   }
 
-  /* Controles */
   .full-controls {
     justify-content: space-between;
     padding: 0 8px;
@@ -523,7 +507,6 @@
     padding: 0 16px;
   }
 
-  /* El reproductor full en desktop no tiene fondo ambiental gigante */
   .full-player::before {
     width: 340px;
     height: 340px;
@@ -534,7 +517,6 @@
     display: none;
   }
 
-  /* Modal centrado en desktop */
   .modal {
     padding: 40px;
   }
@@ -543,7 +525,6 @@
     max-width: 480px;
   }
 
-  /* Toast en desktop arriba derecha */
   .content-toast {
     bottom: 28px;
     right: 28px;
@@ -552,28 +533,8 @@
     max-width: 360px;
   }
 
-  /* Loading overlay */
   .loading-overlay p {
     font-size: 0.9rem;
-  }
-}
-
-@media (min-width: 1280px) {
-  #app {
-    grid-template-columns: 280px 1fr 360px;
-  }
-
-  .full-album-art {
-    width: 270px;
-    height: 270px;
-  }
-
-  .full-content {
-    padding: 44px 32px 40px;
-  }
-
-  .folder-grid {
-    grid-template-columns: repeat(4, 1fr);
   }
 }
 
@@ -652,5 +613,24 @@
 
   .sidebar-nav-btn {
     transition: background 0.2s, color 0.2s, transform 0.15s;
+  }
+}
+
+@media (min-width: 1280px) {
+  #app {
+    grid-template-columns: 280px 1fr 360px;
+  }
+
+  .full-album-art {
+    width: 270px;
+    height: 270px;
+  }
+
+  .full-content {
+    padding: 44px 32px 40px;
+  }
+
+  .folder-grid {
+    grid-template-columns: repeat(4, 1fr);
   }
 }

@@ -1,0 +1,36 @@
+<aside class="app-sidebar" id="app-sidebar">
+  <div class="sidebar-brand">
+    <h1>Mi Música</h1>
+    <p>Reproductor local</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <button class="sidebar-nav-btn nav-active" id="nav-main" onclick="showMainView()">
+      <l-icon name="musical-notes"></l-icon>
+      Biblioteca
+    </button>
+    <button class="sidebar-nav-btn" id="nav-favs" onclick="showFavoritesView()">
+      <l-icon name="heart"></l-icon>
+      Favoritos
+    </button>
+    <button class="sidebar-nav-btn" id="nav-playlists" onclick="showPlaylistsView()">
+      <l-icon name="albums"></l-icon>
+      Playlists
+    </button>
+  </nav>
+
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-label">Agregar música</div>
+
+  <label for="folder-input-sidebar" class="sidebar-import-btn">
+    <l-icon name="folder-open"></l-icon>
+    Importar carpeta
+  </label>
+  <input type="file" id="folder-input-sidebar" webkitdirectory directory multiple hidden>
+
+  <div class="sidebar-bottom">
+    <button class="sidebar-icon-btn setting" id="setting-btn-sidebar" title="Eliminar todo">
+      <l-icon name="settings"></l-icon>
+    </button>
+  </div>
+</aside>

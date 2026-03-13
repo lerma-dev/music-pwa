@@ -10,21 +10,40 @@ const ASSETS = [
 ];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)));
+  e.waitUntil(
+    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+  );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys.map(key => {
+          if (key !== CACHE_NAME) {
+            console.log('Borrando caché antigua:', key);
+            return caches.delete(key);
+          }
+        })
+      );
+    })
+  );
+  return self.clients.claim();
 });
 
 self.addEventListener('fetch', e => {
   e.respondWith(
     caches.match(e.request).then(res => {
-      if (res) return res;
-
-      return fetch(e.request).then(newRes => {
+      return res || fetch(e.request).then(newRes => {
+        // cachear si la respuesta es válida
+        if(!newRes || newRes.status !== 200) return newRes;
+        
         return caches.open(CACHE_NAME).then(cache => {
           cache.put(e.request, newRes.clone());
           return newRes;
         });
       });
-      
     })
   );
 });

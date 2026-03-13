@@ -17,5 +17,8 @@
 @import "./components/searchbar.css";
 @import "./components/buttons.css";
 
+/* SETTINGS ASIDE */
+@import "./components/settings.css";
+
 /* RESPONSIVE */
 @import "./layouts/responsive.css";
