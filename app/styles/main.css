@@ -20,5 +20,8 @@
 /* SETTINGS ASIDE */
 @import "./components/settings.css";
 
+/* ECUALIZADOR */
+@import "./components/equalizer.css";
+
 /* RESPONSIVE */
 @import "./layouts/responsive.css";

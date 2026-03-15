@@ -1,3 +1,5 @@
+import { createEQNodes } from './equalizer.js';
+
 let audioCtx, analyser, source, sound;
 let canvas, canvasCtx;
 
@@ -13,10 +15,16 @@ export function initVisualizer() {
   audioCtx = new (window.AudioContext || window.AudioContext)();
   analyser = audioCtx.createAnalyser();
   source   = audioCtx.createMediaElementSource(sound);
-  source.connect(analyser);
+  // ── EQ: insertar filtros y panner entre source y analyser ──
+  const { filters, panner } = createEQNodes(audioCtx);
+  source.connect(filters[0]);
+  panner.connect(analyser);
   analyser.connect(audioCtx.destination);
   analyser.fftSize = 64;
   draw();
+
+  // ── EQ: renderizar panel (import dinámico) ──
+  import('./equalizer-ui.js').then(({ initEqualizerUI }) => initEqualizerUI());
 }
 
 function draw() {

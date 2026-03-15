@@ -56,6 +56,7 @@
   transition: background 0.2s, color 0.2s;
   position: relative;
   z-index: 2;
+  flex-shrink: 0;
 }
 
 .close-full:active {
@@ -63,15 +64,26 @@
   color: var(--text);
 }
 
+/* ── CAMBIO CLAVE: full-content scrolleable para mostrar el EQ ── */
 .full-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  padding: 10px 28px 32px;
-  height: calc(100% - 70px);
+  /* gap reemplaza justify-content:space-between */
+  gap: 20px;
+  padding: 10px 28px 40px;
+  /* flex:1 + overflow:auto = scroll interno sin romper el layout */
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
   position: relative;
   z-index: 1;
+}
+
+.full-content::-webkit-scrollbar {
+  display: none;
 }
 
 /* Artwork */
@@ -88,10 +100,10 @@
   border: 1px solid rgba(167, 139, 250, 0.2);
   box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(167,139,250,0.1), 0 0 60px rgba(167,139,250,0.12);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex-shrink: 0;
 }
 
 .full-album-art:has(+ .full-info) {
-  /* Animar cuando suena */
   animation: artFloat 6s ease-in-out infinite;
 }
 

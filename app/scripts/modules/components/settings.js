@@ -144,4 +144,18 @@ export function initSettings() {
     setMode(state.playMode);
     syncModeIcon();
   });
+  // --- Botón Ecualizador en Ajustes ---
+  // Import dinámico para no romper la cadena de audio al inicio
+  const eqRow = [...document.querySelectorAll('.settings-row')].find(row =>
+    row.querySelector('.settings-row__label')?.textContent.trim() === 'Ecualizador'
+  );
+  if (eqRow) {
+    eqRow.addEventListener('click', () => {
+      closeSettings();
+      setTimeout(() => {
+        import('./equalizer-ui.js').then(({ toggleEQPanel }) => toggleEQPanel());
+      }, 350);
+    });
+  }
+
 }

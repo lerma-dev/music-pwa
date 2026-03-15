@@ -445,10 +445,17 @@
     background: var(--bg-secondary);
     border-left: 1px solid var(--glass-border);
     height: 100vh;
-    overflow: hidden;
+    /* CAMBIO: overflow-y auto para que el EQ sea visible al hacer scroll */
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: none;
     display: flex !important;
     flex-direction: column;
     z-index: 1 !important;
+  }
+
+  #view-player-full::-webkit-scrollbar {
+    display: none;
   }
 
   .close-full {
@@ -456,10 +463,11 @@
   }
 
   .full-content {
-    height: 100%;
-    padding: 40px 28px 36px;
-    justify-content: center;
-    gap: 28px;
+    /* CAMBIO: flex:1 + gap reemplaza height fijo + justify-content:center */
+    flex: 1;
+    padding: 32px 28px 36px;
+    justify-content: flex-start;
+    gap: 22px;
   }
 
   .full-album-art {
