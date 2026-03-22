@@ -4,19 +4,21 @@ Un reproductor de música web de alto rendimiento diseñado para gestionar libre
 
 ## 📊 Estado del Proyecto
 
-<a href="https://local-tunes.netlify.app">
-  <p>GET IT ON NETLIFY</p>
-  <img src="https://img.shields.io/badge/GET_IT_ON-Netlify-00ad9f?style=for-the-badge&logo=netlify&logoColor=white" alt="Get it on Netlify" height="40">
-</a>
+<p align="center">
+  <a href="https://local-tunes.netlify.app">
+    <img src="https://img.shields.io/badge/GET_IT_ON-Netlify-00ad9f?style=for-the-badge&logo=netlify&logoColor=white" alt="Get it on Netlify" height="50">
+  </a>
+  &nbsp;&nbsp;&nbsp; 
+  <a href="https://lerma-dev.github.io/music-pwa/app">
+    <img src="https://img.shields.io/badge/GET_IT_ON-GitHub_Pages-bc13fe?style=for-the-badge&logo=github&logoColor=white" alt="Get it on GitHub Pages" height="50">
+  </a>
+</p>
 
-<a href="https://lerma-dev.github.io/music-pwa/app">
-  <p>GET IT ON GITHUB-PAGES</p>
-  <img src="https://img.shields.io/badge/GET_IT_ON-GitHub_Pages-bc13fe?style=for-the-badge&logo=github&logoColor=white" alt="Get it on GitHub Pages" height="40">
-</a>
+---
 
-- 🚀 **Producción (Estable):** Rama `main` (Desplegado en Netlify).
-- 🧪 **Beta (Experimental):** Rama `music_beta` (Desplegado en GitHub Pages).
-  - *Actualmente probando: Ecualizador de Aztrad y Notificaciones Push.*
+* 🚀 **Producción (Estable):** Rama `main` (Desplegado en Netlify).
+* 🧪 **Beta (Experimental):** Rama `music_beta` (Desplegado en GitHub Pages).
+    * *Actualmente probando: Ecualizador de Aztrad y Notificaciones Push.*
 
 ![Licencia](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Javascript](https://img.shields.io/badge/JS-Vanilla-yellow.svg)
