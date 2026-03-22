@@ -5,7 +5,6 @@ Un reproductor de música web de alto rendimiento diseñado para gestionar libre
 ## 📊 Estado del Proyecto
 
 [![Get it on Netlify](https://img.shields.io/badge/Get_it_on-Netlify-00ad9f?style=for-the-badge&logo=netlify&logoColor=white)](https://local-tunes.netlify.app)
-
 [![Get it on GitHub Pages](https://img.shields.io/badge/Get_it_on-GitHub_Pages-bc13fe?style=for-the-badge&logo=github&logoColor=white)](https://lerma-dev.github.io/music-pwa/app)
 
 ---
