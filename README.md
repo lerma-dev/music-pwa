@@ -2,6 +2,16 @@
 
 Un reproductor de música web de alto rendimiento diseñado para gestionar librerías masivas de forma local, sin necesidad de servidores externos.
 
+## 📊 Estado del Proyecto
+
+[![Get it on Netlify](https://img.shields.io/badge/Get_it_on-Netlify-00ad9f?style=for-the-badge&logo=netlify&logoColor=white)](https://local-tunes.netlify.app)
+
+[![Get it on GitHub Pages](https://img.shields.io/badge/Get_it_on-GitHub_Pages-bc13fe?style=for-the-badge&logo=github&logoColor=white)](https://lerma-dev.github.io/music-pwa/app)
+
+- 🚀 **Producción (Estable):** Rama `main` (Desplegado en Netlify).
+- 🧪 **Beta (Experimental):** Rama `music_beta` (Desplegado en GitHub Pages).
+  - *Actualmente probando: Ecualizador de Aztrad y Notificaciones Push.*
+
 ![Licencia](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Javascript](https://img.shields.io/badge/JS-Vanilla-yellow.svg)
 
