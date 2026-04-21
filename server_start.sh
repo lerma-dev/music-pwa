@@ -29,4 +29,4 @@ cleanup() {
 trap cleanup SIGINT
 
 # Inicia el servidor de Python
-py -m http.server "$PUERTO" --directory ./app
+python -m http.server "$PUERTO" --directory ./app
