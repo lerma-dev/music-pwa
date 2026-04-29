@@ -66,7 +66,7 @@ function _renderPanel(BANDS) {
             <div class="eq-header">
                 <div class="eq-header-title">
                     <span class="eq-icon-wrap">
-                        <l-icon name="refresh"></l-icon>
+                        <l-icon name="ecualizer"></l-icon>
                     </span>
                     <span class="eq-title">Ecualizador</span>
                 </div>

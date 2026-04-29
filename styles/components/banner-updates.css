@@ -1,0 +1,70 @@
+.banner-updates {
+  background: var(--accent-gradient-soft);
+  padding: 18px 20px;
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  transition: background 0.25s, border-color 0.25s, transform 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.content-update {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.banner-updates:hover {
+    border: 1px solid rgba(167, 139, 250, 0.4);
+}
+
+.banner-updates span{
+    color: var(--text);
+    font-family: var(--font-main);
+}
+
+
+/* pulse para mas destacar el boton */
+.banner-updates .whats-new-btn {
+    animation: pulse 2s infinite;
+    border: 1px solid rgba(167, 139, 250, 0.4);
+    padding: 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.25s, border-color 0.25s, transform 0.2s;
+}
+
+.banner-updates .whats-new-btn l-icon {
+    color: var(--accent);
+    font-size: 25px;
+}
+
+.banner-updates .whats-new-btn:hover {
+    background: var(--accent-glow);
+    border-color: rgba(167, 139, 250, 0.4);
+    cursor: pointer;
+    animation-play-state: paused;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(167, 139, 250, 0.4);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 10px rgba(167, 139, 250, 0);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(167, 139, 250, 0);
+    opacity: 1;
+  }
+}

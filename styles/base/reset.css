@@ -38,7 +38,15 @@ l-icon {
   display: block;
 }
 
+img {
+  width: 45px;
+  height: 45px;
+}
+
 .content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
   -webkit-overflow-scrolling: touch;
 }
 

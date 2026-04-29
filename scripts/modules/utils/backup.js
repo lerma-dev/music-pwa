@@ -1,6 +1,7 @@
 // backup.js — Sistema de respaldos de Music
 import { state } from './state.js';
 import { openDB, storeName } from '../db/database.js';
+import { agregarToast } from '../components/toast.js';
 
 const KEYS = {
   LAST_BACKUP:  'music_last_backup_date',
@@ -8,7 +9,7 @@ const KEYS = {
 };
 
 const APP_NAME    = 'Music';
-const APP_VERSION = '1.0.1';
+const APP_VERSION = localStorage.getItem('appVersion') ?? '0.0.0';
 const DAYS_LIMIT  = 15;
 
 // ─── Comparación de fechas ────────────────────────────────────────────────────
@@ -30,7 +31,7 @@ export function checkBackupReminder() {
     ? `Han pasado ${elapsed} días desde tu último respaldo.`
     : 'Nunca has realizado un respaldo de tus datos.';
 
-  window.agregarToast({
+  agregarToast({
     tipo: 'Error',
     titulo: '¡Respaldo pendiente!',
     descripcion,
@@ -43,7 +44,7 @@ export function checkBackupReminder() {
 export function checkVersionChange() {
   const savedVersion = localStorage.getItem(KEYS.LAST_VERSION);
   if (savedVersion && savedVersion !== APP_VERSION) {
-    window.agregarToast({
+    agregarToast({
       tipo: 'Error',
       titulo: `Music actualizado a v${APP_VERSION}`,
       descripcion: `Versión anterior: v${savedVersion}. Exporta tus datos para proteger favoritos y playlists.`,
@@ -104,7 +105,7 @@ export async function exportBackup() {
 
     localStorage.setItem(KEYS.LAST_BACKUP, String(Date.now()));
 
-    window.agregarToast({
+    agregarToast({
       tipo: 'Exito',
       titulo: 'Respaldo creado',
       descripcion: `${fileName} descargado.`,
@@ -112,7 +113,7 @@ export async function exportBackup() {
     });
 
   } catch (err) {
-    window.agregarToast({
+    agregarToast({
       tipo: 'Error',
       titulo: 'Error al exportar',
       descripcion: err.message,
@@ -157,7 +158,7 @@ export async function importBackup(file) {
     const favCount      = data.favorites?.length  ?? 0;
     const playlistCount = data.playlists?.length  ?? 0;
 
-    window.agregarToast({
+    agregarToast({
       tipo: 'Exito',
       titulo: 'Backup restaurado',
       descripcion: `${favCount} favoritos y ${playlistCount} playlists recuperados. Agrega tu música para reproducirlas.`,
@@ -173,7 +174,7 @@ export async function importBackup(file) {
       .then(({ renderFavorites }) => renderFavorites());
 
   } catch (err) {
-    window.agregarToast({
+    agregarToast({
       tipo: 'Error',
       titulo: 'Error al importar',
       descripcion: err.message,

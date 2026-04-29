@@ -1,4 +1,7 @@
-const CACHE_NAME = 'music-v1.1.1';
+// app/sw.js
+const CACHE_NAME = 'music-v1.5.3';
+const APP_VERSION = CACHE_NAME.replace('music-v', '');
+
 const ASSETS = [
   './',
   './index.html',
@@ -9,29 +12,38 @@ const ASSETS = [
   './manifest.json'
 ];
 
+//insatalacion 
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
   );
-  self.skipWaiting();
 });
 
+//activacion - limpieza de caches antiguas
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys => {
       return Promise.all(
         keys.map(key => {
           if (key !== CACHE_NAME) {
-            console.log('Borrando caché antigua:', key);
             return caches.delete(key);
           }
         })
       );
+    }).then(() => {
+      // Notificar a todos los clientes inmediatamente
+      return self.clients.matchAll({includeUncontrolled: true, type: 'window'});
+    }).then(clients => {
+      clients.forEach(client => client.postMessage({ 
+        action: 'setVersion', 
+        version: APP_VERSION 
+      }));
     })
   );
   return self.clients.claim();
 });
 
+// fetch - estrategia cache-first
 self.addEventListener('fetch', e => {
   e.respondWith(
     caches.match(e.request).then(res => {
@@ -46,4 +58,10 @@ self.addEventListener('fetch', e => {
       });
     })
   );
+});
+
+self.addEventListener('message', event => {
+  if (event.data && event.data.action === 'skipWaiting') {
+    self.skipWaiting();
+  }
 });
