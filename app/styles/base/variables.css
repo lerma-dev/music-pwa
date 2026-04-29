@@ -3,6 +3,8 @@
 :root {
   --bg: #08070f;
   --bg-secondary: #0e0c1a;
+  --color-secondary: #150e36;
+  --color-on-secondary: #dcd2ff;
   --card-bg: rgba(255, 255, 255, 0.04);
   --card-bg-hover: rgba(255, 255, 255, 0.07);
   --player-bg: #0d0b1c;

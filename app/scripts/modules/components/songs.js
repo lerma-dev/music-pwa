@@ -3,6 +3,7 @@ import { escapeJS, applyMarqueeIfNeeded } from '../utils/helpers.js';
 import { toggleFavorite } from './favorites.js';
 import { playSong } from './player.js';
 import { openModal } from '../ui/modals.js';
+import { openSongContextMenu } from '../ui/song-context-menu.js';
 
 const songListUI = document.getElementById('song-list');
 
@@ -47,9 +48,16 @@ export function renderNextBatch() {
         <button class="fav-btn" onclick="toggleFavorite('${escapedFolder}', '${escapedTitle}', event)">
             <l-icon name="${lerma}" class="${classFav}"></l-icon>
         </button>
-        <button class="fav-btn" onclick="openModal(event, '${escapedTitle}')">
+        <button class="fav-btn song-ctx-btn" aria-label="Opciones">
             <l-icon name="menu"></l-icon>
         </button>`;
+
+        // Capturar el nombre de la carpeta en el closure
+        const capturedFolder = currentFolderName;
+        const capturedSong = { title: song.title, artist: song.artist };
+        li.querySelector('.song-ctx-btn').addEventListener('click', (e) => {
+            openSongContextMenu(e, capturedSong, 'detail', { folderName: capturedFolder });
+        });
 
         fragment.appendChild(li);
         newTitles.push(li.querySelector('.marquee-text'));

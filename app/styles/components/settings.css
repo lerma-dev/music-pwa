@@ -281,10 +281,10 @@
   flex-shrink: 0;
 }
 
-.settings-panel__version {
+.settings-panel-version {
   display: block;
   text-align: center;
-  font-size: 0.65rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
   letter-spacing: 0.8px;
 }

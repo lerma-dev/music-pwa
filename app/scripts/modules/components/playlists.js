@@ -4,7 +4,8 @@ import { escapeJS } from '../utils/helpers.js';
 import { playSong } from './player.js';
 import { closeModal, closeModalView } from '../ui/modals.js';
 import { showFullPlaylist } from '../ui/views.js';
-import agregarToast from './toast.js';
+import {agregarToast} from './toast.js';
+import { openSongContextMenu } from '../ui/song-context-menu.js';
 
 const PlaySongListUI = document.getElementById('playlist-song');
 
@@ -193,7 +194,6 @@ export async function renderSongPlaylist(playlistId, filterText = "") {
         const fragment = document.createDocumentFragment();
         canciones.forEach((song) => {
             const RealIndex = playlist.data.song.indexOf(song);
-            const escapedTitle = escapeJS(song.title);
             const li = document.createElement('li');
             li.className = 'song-item';
             li.innerHTML = `
@@ -204,7 +204,14 @@ export async function renderSongPlaylist(playlistId, filterText = "") {
                     <span class="song-artist">${song.artist || "Artista desconocido"}</span>
                 </div>
             </div>
-            <button class="fav-btn"><l-icon name="menu"></l-icon></button>`;
+            <button class="fav-btn song-ctx-btn" aria-label="Opciones"><l-icon name="menu"></l-icon></button>`;
+
+            const capturedSong = { title: song.title, artist: song.artist || '' };
+            const capturedPlaylistId = playlistId;
+            li.querySelector('.song-ctx-btn').addEventListener('click', (e) => {
+                openSongContextMenu(e, capturedSong, 'playlist', { playlistId: capturedPlaylistId });
+            });
+
             fragment.appendChild(li);
         });
         PlaySongListUI.appendChild(fragment);
@@ -238,12 +245,31 @@ export async function playSongFromPlaylist(playlistId, index) {
 
         // Si la canción pedida no tiene file, avisar y no reproducir
         if (!enriched[index]?.file) {
-            window.agregarToast({
-                tipo: 'Error',
-                titulo: 'Canción no disponible',
-                descripcion: 'Importa la carpeta de música para poder reproducir esta canción.',
-                autoClose: false,
-            });
+            const songMeta = enriched[index];
+            const existsInLibrary = Object.values(state.library).some(songs =>
+                songs.some(s => s.title === songMeta?.title)
+            );
+            const libraryIsEmpty = Object.keys(state.library).length === 0;
+
+            let titulo, descripcion, autoClose;
+            if (libraryIsEmpty) {
+                // El usuario importó playlists/favoritos antes de agregar carpetas
+                titulo = 'Carpeta no importada';
+                descripcion = 'Agrega la carpeta de música para poder reproducir esta canción.';
+                autoClose = false;
+            } else if (!existsInLibrary) {
+                // La canción fue eliminada de la carpeta raíz
+                titulo = 'Canción no encontrada';
+                descripcion = `"${songMeta?.title}" ya no existe en la carpeta de origen.`;
+                autoClose = true;
+            } else {
+                // Existe en la librería pero el File binario no está (importación sin binarios)
+                titulo = 'Canción no disponible';
+                descripcion = 'Importa la carpeta de música para poder reproducir esta canción.';
+                autoClose = false;
+            }
+
+            window.agregarToast({ tipo: 'Error', titulo, descripcion, autoClose });
             return;
         }
 

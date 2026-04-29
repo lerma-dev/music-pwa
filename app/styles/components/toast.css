@@ -33,11 +33,19 @@
 }
 
 .toast.exito {
-  background: #4f3db4;
+  background: #5b22b6;
 }
 
 .toast.error {
   background: #c2336e;
+}
+
+.toast.info {
+  background: #1666c2;
+}
+
+.toast.warning {
+  background: #a3842f;
 }
 
 .toast .btn_close {

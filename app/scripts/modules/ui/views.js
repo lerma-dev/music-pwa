@@ -94,8 +94,10 @@ songSearch.addEventListener('input', (e) => {
 // Resize: si se pasa a desktop ocultar el full player overlay
 window.addEventListener('resize', () => {
     if (window.innerWidth >= 1024) {
+
         const fp = document.getElementById('view-player-full');
         if (fp) fp.classList.remove('active');
+
         const mini = document.querySelector('.mini-player');
         if (mini) mini.style.display = 'none';
         document.body.style.overflow = 'auto';
