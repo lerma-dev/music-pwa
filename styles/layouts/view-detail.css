@@ -87,6 +87,7 @@
   background: var(--glass);
   border-radius: 16px;
   border: 1px solid transparent;
+  user-select: none;
   transition: background 0.2s, border-color 0.2s, transform 0.15s;
 }
 
@@ -118,13 +119,19 @@
 .album-art-placeholder {
   width: 42px;
   height: 42px;
-  background: var(--glass-strong);
   border-radius: 10px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-strong);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border: 1px solid var(--glass-border);
+}
+
+.album-art-placeholder .mini-viz {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
 }
 
 .album-art-placeholder l-icon {
@@ -134,6 +141,8 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+ 
 
 .song-artist {
   display: block;

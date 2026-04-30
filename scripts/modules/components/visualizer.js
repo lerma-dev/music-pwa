@@ -62,3 +62,5 @@ function draw() {
     x += barWidth + 1;
   }
 }
+
+export function getAnalyser() { return analyser; }

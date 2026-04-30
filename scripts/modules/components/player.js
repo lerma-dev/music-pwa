@@ -2,7 +2,7 @@ import { state } from '../utils/state.js';
 import { applyMarqueeIfNeeded } from '../utils/helpers.js';
 import { setMode, getStoredMode, syncModeIcon } from '../utils/mode.js';
 import { initVisualizer } from './visualizer.js';
-
+import { initMiniVisualizer, stopMiniVisualizer, pauseMiniVisualizer, resumeMiniVisualizer } from './mini-visualizer.js'; 
 
 // --- REFERENCIAS DOM (se asignan en initPlayer, después de loadViews) ---
 let audio, trackName, fullTrackName, artistName, FullArtistName;
@@ -64,6 +64,51 @@ export function initPlayer() {
     };
 }
 
+export function updateActiveSongInList(container = null) {
+    // Si no se pasa contenedor, buscar en todos los posibles
+    const lists = container 
+        ? [container]
+        : [
+            document.getElementById('song-list'),        // carpeta
+            document.getElementById('playlist-song'),    // playlist
+            document.getElementById('favs-song-list'),   // favoritos
+          ].filter(Boolean);
+
+    lists.forEach(listEl => {
+        if (!listEl.offsetParent) return;
+        // Quitar is-playing anterior
+        listEl.querySelectorAll('.song-item.is-playing').forEach(li => {
+            li.classList.remove('is-playing');
+            const placeholder = li.querySelector('.album-art-placeholder');
+            if (placeholder) placeholder.innerHTML = `<l-icon name="musical-note"></l-icon>`;
+        });
+    });
+
+    stopMiniVisualizer();
+    if (state.currentIndex === -1) return;
+
+    const currentSong = state.currentQueue[state.currentIndex];
+    if (!currentSong) return;
+
+    // Buscar en todas las listas visibles
+    lists.forEach(listEl => {
+        const activeLi = [...listEl.querySelectorAll('.song-item')].find(li =>
+            li.querySelector('.marquee-text')?.textContent === currentSong.title
+        );
+        if (!activeLi) return;
+
+        activeLi.classList.add('is-playing');
+        const placeholder = activeLi.querySelector('.album-art-placeholder');
+        if (placeholder) {
+            placeholder.innerHTML = `<canvas class="mini-viz" width="80" height="80"></canvas>`;
+            requestAnimationFrame(() => {
+                const miniCanvas = placeholder.querySelector('.mini-viz');
+                if (miniCanvas) initMiniVisualizer(miniCanvas);
+            });
+        }
+    });
+}
+
 // --- REPRODUCCIÓN ---
 export function playSong(i) {
     if (i < 0 || i >= state.currentQueue.length) return;
@@ -90,6 +135,7 @@ export function playSong(i) {
     if (defaultIcon) defaultIcon.style.display = 'none';
     if (visualizerCanvas) visualizerCanvas.style.display = 'block';
     initVisualizer();
+    updateActiveSongInList();
 
     requestAnimationFrame(() => {
         applyMarqueeIfNeeded(trackName);
@@ -195,7 +241,6 @@ export function playPrev() {
     if (state.history.length > 0) {
         // Sacamos el último índice del historial
         const lastIndex = state.history.pop();
-        
         const song = state.currentQueue[lastIndex];
         state.currentIndex = lastIndex;
         
@@ -204,7 +249,8 @@ export function playPrev() {
         audio.play();
 
         // Actualizar UI
-        updateUI(song); 
+        updateUI(song);
+        updateActiveSongInList(); 
     } else {
         // Si no hay historial, se comporta normal
         const prev = (state.currentIndex - 1 + state.currentQueue.length) % state.currentQueue.length;
@@ -221,6 +267,9 @@ export function togglePlay() {
     updatePlayButtons(!audio.paused);
     document.getElementById('default-icon').style.display = audio.paused ? 'block' : 'none';
     document.getElementById('visualizer').style.display   = audio.paused ? 'none'  : 'block';
+
+    // ausar/reanudar mini sin cambiar el icono
+    audio.paused ? pauseMiniVisualizer() : resumeMiniVisualizer();
 }
 
 export function mode() {

@@ -1,5 +1,6 @@
 .app-sidebar {
   display: none;
+  user-select: none;
 }
 
 /* ── TABLET (768px+) ── */

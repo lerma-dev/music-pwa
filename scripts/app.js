@@ -18,6 +18,8 @@ applyStoredTheme();
     const { initVisualizerVar } = await import('./modules/components/visualizer.js');
     const { initToast,  eliminarToast, agregarToast} = await import('./modules/components/toast.js');
     const { initbannerUpdates } = await import('./modules/components/banner-updates.js');
+    const { initSongContextMenu } = await import('./modules/ui/song-context-menu.js');
+
     await import('./modules/ui/views.js');
     await import('./modules/ui/modals.js');
     await import('./modules/ui/song-context-menu.js');
@@ -30,6 +32,7 @@ applyStoredTheme();
     initFavorites();
     initVisualizerVar();
     initSettings();
+    initSongContextMenu();
     // toast
     initToast();
     eliminarToast();

@@ -4,6 +4,8 @@ import { toggleFavorite } from './favorites.js';
 import { playSong } from './player.js';
 import { openModal } from '../ui/modals.js';
 import { openSongContextMenu } from '../ui/song-context-menu.js';
+import { initMiniVisualizer } from './mini-visualizer.js';
+import { updateActiveSongInList } from './player.js';
 
 const songListUI = document.getElementById('song-list');
 
@@ -32,9 +34,12 @@ export function renderNextBatch() {
         const escapedTitle = escapeJS(song.title);
         const lerma = isFav ? 'heart' : 'heart-outline';
         const classFav = isFav ? 'is-fav' : '';
+        const isPlaying = realIndex === state.currentIndex && state.currentIndex !== -1;
 
         const li = document.createElement('li');
         li.className = 'song-item';
+        if (isPlaying) li.classList.add('is-playing');
+
         li.innerHTML = `
         <div class="song-info-container" onclick="playSong(${realIndex})">
             <div class="album-art-placeholder">
@@ -48,9 +53,17 @@ export function renderNextBatch() {
         <button class="fav-btn" onclick="toggleFavorite('${escapedFolder}', '${escapedTitle}', event)">
             <l-icon name="${lerma}" class="${classFav}"></l-icon>
         </button>
-        <button class="fav-btn song-ctx-btn" aria-label="Opciones">
+        <button class="fav-btn song-ctx-btn" title="Opciones">
             <l-icon name="menu"></l-icon>
         </button>`;
+
+        // Iniciar mini visualizador si es la canción activa
+        if (isPlaying) {
+            requestAnimationFrame(() => {
+                const miniCanvas = li.querySelector('.mini-viz');
+                if (miniCanvas) initMiniVisualizer(miniCanvas);
+            });
+        }
 
         // Capturar el nombre de la carpeta en el closure
         const capturedFolder = currentFolderName;
@@ -68,6 +81,7 @@ export function renderNextBatch() {
 
     requestAnimationFrame(() => {
         newTitles.forEach(el => applyMarqueeIfNeeded(el));
+        updateActiveSongInList();
     });
 
     if (state.itemsDisplayed < state.songsToRenderGlobal.length) {

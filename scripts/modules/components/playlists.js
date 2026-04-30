@@ -6,6 +6,8 @@ import { closeModal, closeModalView } from '../ui/modals.js';
 import { showFullPlaylist } from '../ui/views.js';
 import {agregarToast} from './toast.js';
 import { openSongContextMenu } from '../ui/song-context-menu.js';
+import { initMiniVisualizer } from './mini-visualizer.js';
+import { updateActiveSongInList } from './player.js';
 
 const PlaySongListUI = document.getElementById('playlist-song');
 
@@ -194,17 +196,31 @@ export async function renderSongPlaylist(playlistId, filterText = "") {
         const fragment = document.createDocumentFragment();
         canciones.forEach((song) => {
             const RealIndex = playlist.data.song.indexOf(song);
+            const isPlaying = RealIndex === state.currentIndex && state.currentIndex !== -1;
             const li = document.createElement('li');
             li.className = 'song-item';
+            if (isPlaying) li.classList.add('is-playing');
             li.innerHTML = `
             <div class="song-info-container" onclick="playSongFromPlaylist('${playlistId}', ${RealIndex})">
-                <div class="album-art-placeholder"><l-icon name="musical-note"></l-icon></div>
+                <div class="album-art-placeholder">
+                    ${isPlaying
+                        ? `<canvas class="mini-viz" width="80" height="80"></canvas>`
+                        : `<l-icon name="musical-note"></l-icon>`
+                    }
+                </div>
                 <div class="marquee-container">
                     <strong class="marquee-text">${song.title}</strong>
                     <span class="song-artist">${song.artist || "Artista desconocido"}</span>
                 </div>
             </div>
             <button class="fav-btn song-ctx-btn" aria-label="Opciones"><l-icon name="menu"></l-icon></button>`;
+
+            if (isPlaying) {
+                requestAnimationFrame(() => {
+                    const miniCanvas = li.querySelector('.mini-viz');
+                    if (miniCanvas) initMiniVisualizer(miniCanvas);
+                });
+            }
 
             const capturedSong = { title: song.title, artist: song.artist || '' };
             const capturedPlaylistId = playlistId;
@@ -215,6 +231,7 @@ export async function renderSongPlaylist(playlistId, filterText = "") {
             fragment.appendChild(li);
         });
         PlaySongListUI.appendChild(fragment);
+        setTimeout(() => updateActiveSongInList(), 50);
     };
 }
 

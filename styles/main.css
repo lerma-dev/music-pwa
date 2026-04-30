@@ -17,6 +17,7 @@
 @import "./components/searchbar.css";
 @import "./components/buttons.css";
 @import "./components/banner-updates.css";
+@import "./components/waterMark.css";
 
 /* SETTINGS ASIDE */
 @import "./components/settings.css";

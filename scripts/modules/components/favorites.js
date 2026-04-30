@@ -2,6 +2,8 @@ import { state } from '../utils/state.js';
 import { openDB, storeName } from '../db/database.js';
 import { escapeJS } from '../utils/helpers.js';
 import { playSong } from './player.js';
+import { initMiniVisualizer} from './mini-visualizer.js';
+import { updateActiveSongInList } from './player.js';
 
 // --- REFERENCIAS DOM (se asignan en initFavorites) ---
 let favsSongListUI, favsSongSearch;
@@ -82,17 +84,28 @@ export function renderFavorites(searchTerm = "") {
 
     document.getElementById('favs-stats-info').textContent = `${allFavs.length} canciones • Favoritos`;
 
+    const currentSong = state.currentQueue[state.currentIndex];
+
     const fragment = document.createDocumentFragment();
     allFavs.forEach((song) => {
+        const isPlaying = state.currentIndex !== -1 &&
+            currentSong?.title === song.title &&
+            currentSong?.artist === song.artist;
+
         const li = document.createElement('li');
         li.className = 'song-item';
+        if (isPlaying) li.classList.add('is-playing');
+
         const escapedFolder = escapeJS(song.folderName);
         const escapedTitle  = escapeJS(song.title);
 
         li.innerHTML = `
             <div class="song-info-container">
                 <div class="album-art-placeholder">
-                    <l-icon name="musical-note"></l-icon>
+                    ${isPlaying
+                        ? `<canvas class="mini-viz" width="80" height="80"></canvas>`
+                        : `<l-icon name="musical-note"></l-icon>`
+                    }
                 </div>
                 <div class="marquee-container" style="overflow:hidden; flex:1;">
                     <strong class="marquee-text">${song.title}</strong>
@@ -102,6 +115,13 @@ export function renderFavorites(searchTerm = "") {
             <button class="fav-btn" onclick="toggleFavoriteFromFavs('${escapedFolder}', '${escapedTitle}', event)">
                 <l-icon name="heart" class="is-fav"></l-icon>
             </button>`;
+
+        if (isPlaying) {
+            requestAnimationFrame(() => {
+                const miniCanvas = li.querySelector('.mini-viz');
+                if (miniCanvas) initMiniVisualizer(miniCanvas);
+            });
+        }
 
         li.querySelector('.song-info-container').onclick = () => {
             state.currentQueue = allFavs;
@@ -116,6 +136,7 @@ export function renderFavorites(searchTerm = "") {
     });
 
     favsSongListUI.appendChild(fragment);
+    setTimeout(() => updateActiveSongInList(), 50);
 }
 
 // Exponer globalmente
