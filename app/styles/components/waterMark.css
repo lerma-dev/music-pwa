@@ -1,0 +1,41 @@
+.waterMark {
+  position: fixed;
+  bottom: 80px; 
+  right: 12px;
+  background:  rgba(167, 139, 250, 0.12);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 4px 8px;
+  border-radius: 6px;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1000;
+}
+
+body:has(.settings-panel.is-open) .waterMark {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/*Tablet*/
+@media (min-width: 768px) and (max-width: 1023px) {
+  .waterMark {
+    top: 8px;
+    left: 28px; 
+    bottom: unset; 
+    right: unset;
+  }
+}
+
+/*desktop*/
+@media (min-width: 1024px) {
+  .waterMark {
+    top: 65px;
+    left: 185px; 
+    bottom: unset;
+    right: unset;
+  }
+}

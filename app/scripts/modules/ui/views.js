@@ -82,14 +82,17 @@ window.showFullPlayer    = showFullPlayer;
 window.hideFullPlayer    = hideFullPlayer;
 
 // Búsqueda de canciones
-songSearch.addEventListener('input', (e) => {
-    const term = e.target.value.toLowerCase();
-    const filteredSongs = state.currentQueue.filter(song =>
-        song.title.toLowerCase().includes(term) ||
-        song.artist.toLowerCase().includes(term)
-    );
-    renderSongs(filteredSongs);
-});
+if(songSearch){
+    songSearch.addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        const filteredSongs = state.currentQueue.filter(song =>
+            song.title.toLowerCase().includes(term) ||
+            song.artist.toLowerCase().includes(term)
+        );
+        renderSongs(filteredSongs);
+    });
+}
+
 
 // Resize: si se pasa a desktop ocultar el full player overlay
 window.addEventListener('resize', () => {
