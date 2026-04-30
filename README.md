@@ -17,13 +17,13 @@ Un reproductor de música web de alto rendimiento diseñado para gestionar libre
 ```html  
 <script src="./register_sw.js"></script>
 ```
-para no moleste a la hora de recargar la app en localhost
+para que no moleste a la hora de recargar la app en localhost y poder los cambios.
 
-* Al final antes de de hacer el `git add`, `git commit` y `git push` se agrega la linea otra vez y en el archivo `sw.js`
+* Al final **ANTES** de de hacer el `git add`, `git commit` y `git push` se agrega la linea otra vez y en el archivo `app/sw.js` se modifica la siguiente linea
 ```js
 const CACHE_NAME = 'music-v1.5.3';
 ```
-se actualiza la version.
+para actulizar la version y el admin puede subir sin fallas a `produccion` o `beta`
 
 ![Licencia](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Javascript](https://img.shields.io/badge/JS-Vanilla-yellow.svg)
