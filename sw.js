@@ -1,5 +1,5 @@
 // app/sw.js
-const CACHE_NAME = 'music-v1.5.3';
+const CACHE_NAME = 'music-v1.6.3';
 const APP_VERSION = CACHE_NAME.replace('music-v', '');
 
 const ASSETS = [
