@@ -11,7 +11,19 @@ Un reproductor de música web de alto rendimiento diseñado para gestionar libre
 
 * 🚀 **Producción (Estable):** Rama `main` (Desplegado en Netlify).
 * 🧪 **Beta (Experimental):** Rama `music_beta` (Desplegado en GitHub Pages).
-    * *Actualmente probando: Ecualizador de Aztrad y Notificaciones Push.*
+
+**Nota:**
+* Cada crees un rama para meter nuevos cambios en el `index.html` eliminas la siguiente linea 
+```html  
+<script src="./register_sw.js"></script>
+```
+para no moleste a la hora de recargar la app en localhost
+
+* Al final antes de de hacer el `git add`, `git commit` y `git push` se agrega la linea otra vez y en el archivo `sw.js`
+```js
+const CACHE_NAME = 'music-v1.5.3';
+```
+se actualiza la version.
 
 ![Licencia](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Javascript](https://img.shields.io/badge/JS-Vanilla-yellow.svg)
