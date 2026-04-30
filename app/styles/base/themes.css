@@ -23,6 +23,7 @@
 
   /* Mini player */
   --mini-player-bg: rgba(237, 233, 255, 0.92);
+  --mini-player-shadow: 0 -8px 40px rgba(136, 136, 136, 0.781), 0 -1px 0 rgba(167,139,250,0.12);
 
   /* Modal */
   --modal-bg: linear-gradient(145deg, #ede9ff, #e5e0ff);
@@ -51,6 +52,7 @@
   --shadow-glow: 0 0 40px rgba(167, 139, 250, 0.18);
 
   --mini-player-bg: rgba(13, 11, 28, 0.85);
+  --mini-player-shadow: 0 -8px 40px rgba(100,80,180,0.1), 0 -1px 0 rgba(167,139,250,0.12);
   --modal-bg: linear-gradient(145deg, #1a1735, #0f0d20);
   --modal-overlay: rgba(4, 3, 12, 0.75);
   --settings-overlay: rgba(0, 0, 0, 0.6);

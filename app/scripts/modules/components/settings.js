@@ -3,16 +3,15 @@ import { state } from '../utils/state.js';
 import { setTheme, getStoredTheme } from '../utils/theme.js';
 import { setMode, getStoredMode, syncModeIcon } from '../utils/mode.js';
 import { exportBackup, importBackup, checkBackupReminder, checkVersionChange } from '../utils/backup.js';
+import { initVersionApp } from '../utils/version_app.js';
 
 export function initSettings() {
   const panel    = document.getElementById('settings-panel');
   const overlay  = document.getElementById('settings-overlay');
   const openBtn  = document.getElementById('settings-btn');
   const closeBtn = document.getElementById('settings-close-btn');
-  const tag_version = document.getElementById('version_app');
-  const appVersion =  localStorage.getItem('appVersion') ?? '0.0.0';
 
-  tag_version.textContent = `Mi Música v${appVersion}`;
+  initVersionApp();
 
   // --- Abrir / cerrar ---
   function openSettings() {

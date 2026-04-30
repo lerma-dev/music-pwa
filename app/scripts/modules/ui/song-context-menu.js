@@ -1,9 +1,3 @@
-/**
- * song-context-menu.js
- * Menú contextual de tres puntitos para canciones.
- * Funciona en view-detail (carpeta) y view-playlist-full (playlist).
- */
-
 import { state } from '../utils/state.js';
 import { openDB, storeName } from '../db/database.js';
 import { agregarToast } from '../components/toast.js';
@@ -11,24 +5,68 @@ import { renderSongs } from '../components/songs.js';
 import { renderSongPlaylist } from '../components/playlists.js';
 import { openModal } from './modals.js';
 
-// ── Estado interno del menú ──────────────────────────────────────────────────
+let menu, overlay, editBtn, deleteBtn, deleteLabel, playlistBtn;
+let editModal, editTitle, editArtist;
+let confirmModal, confirmMsg, confirmOkBtn;
+
+export function initSongContextMenu() {
+    // ── Referencias DOM 
+    menu = document.getElementById('song-context-menu');
+    overlay = document.getElementById('song-ctx-overlay');
+    editBtn = document.getElementById('ctx-edit-btn');
+    deleteBtn = document.getElementById('ctx-delete-btn');
+    deleteLabel = document.getElementById('ctx-delete-label');
+    playlistBtn = document.getElementById('ctx-playlist-btn');
+    editModal   = document.getElementById('edit-song-modal');
+    editTitle   = document.getElementById('edit-song-title');
+    editArtist  = document.getElementById('edit-song-artist'); 
+    confirmModal  = document.getElementById('confirm-delete-modal');
+    confirmMsg    = document.getElementById('confirm-delete-msg');
+    confirmOkBtn  = document.getElementById('confirm-delete-ok');
+
+    overlay.addEventListener('click', closeContextMenu);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeContextMenu(); });
+
+    // ── Acción: Editar datos 
+    editBtn.addEventListener('click', () => {
+        closeContextMenu();
+        openEditSongModal(_ctx.song);
+    });
+
+    // ── Acción: Agregar a playlist (sólo view-detail)
+    playlistBtn.addEventListener('click', (e) => {
+        closeContextMenu();
+        // Reutilizamos el modal existente de playlists
+        state.selectedSong = _ctx.song;
+        openModal(e, _ctx.song.title);
+    });
+
+    // ── Acción: Eliminar 
+    deleteBtn.addEventListener('click', () => {
+        closeContextMenu();
+        const msg = _ctx.context === 'playlist'
+            ? `¿Seguro que quieres eliminar "${_ctx.song.title}" de esta playlist?`
+            : `¿Seguro que quieres eliminar "${_ctx.song.title}" de la carpeta?`;
+        openConfirmDeleteModal(msg, handleDelete);
+    });
+
+    confirmOkBtn.addEventListener('click', async () => {
+        if (_pendingDeleteFn) await _pendingDeleteFn();
+        closeConfirmDeleteModal();
+    });
+}
+
+// ── Estado interno del menú 
 const _ctx = {
-    song: null,          // objeto { title, artist }
-    context: null,       // 'detail' | 'playlist'
-    playlistId: null,    // sólo cuando context === 'playlist'
-    songIndexInFolder: null,  // índice en state.library[folder] para context==='detail'
-    folderName: null,    // sólo cuando context === 'detail'
+    song: null,          
+    context: null,     
+    playlistId: null,   
+    songIndexInFolder: null,  
+    folderName: null,   
 };
 
-// ── Referencias DOM ──────────────────────────────────────────────────────────
-const menu      = document.getElementById('song-context-menu');
-const overlay   = document.getElementById('song-ctx-overlay');
-const editBtn   = document.getElementById('ctx-edit-btn');
-const deleteBtn = document.getElementById('ctx-delete-btn');
-const deleteLabel = document.getElementById('ctx-delete-label');
-const playlistBtn = document.getElementById('ctx-playlist-btn');
 
-// ── Abrir menú ───────────────────────────────────────────────────────────────
+// ── Abrir menú 
 export function openSongContextMenu(event, song, context, extra = {}) {
     event.stopPropagation();
 
@@ -75,32 +113,6 @@ function closeContextMenu() {
     overlay.style.display = 'none';
     setTimeout(() => { menu.style.display = 'none'; }, 200);
 }
-
-overlay.addEventListener('click', closeContextMenu);
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeContextMenu(); });
-
-// ── Acción: Editar datos ─────────────────────────────────────────────────────
-editBtn.addEventListener('click', () => {
-    closeContextMenu();
-    openEditSongModal(_ctx.song);
-});
-
-// ── Acción: Agregar a playlist (sólo view-detail) ────────────────────────────
-playlistBtn.addEventListener('click', (e) => {
-    closeContextMenu();
-    // Reutilizamos el modal existente de playlists
-    state.selectedSong = _ctx.song;
-    openModal(e, _ctx.song.title);
-});
-
-// ── Acción: Eliminar ─────────────────────────────────────────────────────────
-deleteBtn.addEventListener('click', () => {
-    closeContextMenu();
-    const msg = _ctx.context === 'playlist'
-        ? `¿Seguro que quieres eliminar "${_ctx.song.title}" de esta playlist?`
-        : `¿Seguro que quieres eliminar "${_ctx.song.title}" de la carpeta?`;
-    openConfirmDeleteModal(msg, handleDelete);
-});
 
 async function handleDelete() {
     if (_ctx.context === 'playlist') {
@@ -152,13 +164,6 @@ async function deleteSongFromFolder() {
         renderSongs(songs);
     };
 }
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// MODAL: Editar Datos
-// ═══════════════════════════════════════════════════════════════════════════════
-const editModal   = document.getElementById('edit-song-modal');
-const editTitle   = document.getElementById('edit-song-title');
-const editArtist  = document.getElementById('edit-song-artist');
 
 function openEditSongModal(song) {
     editTitle.value  = song.title  || '';
@@ -240,12 +245,6 @@ async function editSongInFolder(newTitle, newArtist) {
     };
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// MODAL: Confirmar Eliminación
-// ═══════════════════════════════════════════════════════════════════════════════
-const confirmModal  = document.getElementById('confirm-delete-modal');
-const confirmMsg    = document.getElementById('confirm-delete-msg');
-const confirmOkBtn  = document.getElementById('confirm-delete-ok');
 
 let _pendingDeleteFn = null;
 
@@ -262,12 +261,7 @@ export function closeConfirmDeleteModal() {
     _pendingDeleteFn = null;
 }
 
-confirmOkBtn.addEventListener('click', async () => {
-    if (_pendingDeleteFn) await _pendingDeleteFn();
-    closeConfirmDeleteModal();
-});
-
-// ── Exponer globalmente ───────────────────────────────────────────────────────
+// ── Exponer globalmente
 window.openSongContextMenu   = openSongContextMenu;
 window.closeEditSongModal    = closeEditSongModal;
 window.saveEditSong          = saveEditSong;
