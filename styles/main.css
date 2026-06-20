@@ -9,6 +9,7 @@
 @import "./layouts/view-detail.css";
 @import "./layouts/view-player-full.css";
 @import "./layouts/mini-player.css";
+@import "./layouts/desktop-titlebar.css";
 
 /* ELEMENTOS INTERCATIVOS (components) */
 @import "./components/toast.css";

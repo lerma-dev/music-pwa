@@ -82,20 +82,27 @@
           </label>
         </div>
 
-        <div class="settings-row" id="setting-notifications">
+        <div class="settings-row titlebar-style-row" id="setting-titlebar-style">
           <div class="settings-row__icon">
-            <l-icon name="notifications" id="notif-icon"></l-icon>
+            <l-icon name="desktop-outline"></l-icon>
           </div>
           <div class="settings-row__text">
-            <div class="settings-row__label">Notificaciones</div>
-            <div class="settings-row__desc">Mostrar canción en notificación</div>
+            <div class="settings-row__label">Estilo de ventana</div>
+            <div class="settings-row__desc">Adaptar controles al sistema operativo</div>
           </div>
-          <label class="settings-toggle">
-            <input type="checkbox" id="toggle-notif" checked>
-            <span class="settings-toggle__track"></span>
-          </label>
-        </div>
+          <span class="settings-row__arrow titlebar-style-arrow" id="titlebar-style-arrow">
+            <l-icon name="chevron-down"></l-icon>
+          </span>
 
+          <div class="titlebar-style-dropdown" id="titlebar-style-dropdown" aria-hidden="true">
+            <button class="titlebar-style-option" data-style="custom">
+              Custom
+            </button>
+            <button class="titlebar-style-option" data-style="native">
+              Native
+            </button>
+          </div>
+        </div>
       </div>
       <div class="settings-divider"></div>
 
@@ -111,6 +118,19 @@
             <div class="settings-row__label">Formatos admitidos</div>
             <div class="settings-row__desc">MP3, FLAC, OGG, WAV…</div>
           </div>
+        </div>
+        <div class="settings-row" id="setting-notifications">
+          <div class="settings-row__icon">
+            <l-icon name="notifications" id="notif-icon"></l-icon>
+          </div>
+          <div class="settings-row__text">
+            <div class="settings-row__label">Notificaciones</div>
+            <div class="settings-row__desc">Mostrar canción en notificación</div>
+          </div>
+          <label class="settings-toggle">
+            <input type="checkbox" id="toggle-notif" checked>
+            <span class="settings-toggle__track"></span>
+          </label>
         </div>
 
       </div>

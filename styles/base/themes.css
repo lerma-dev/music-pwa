@@ -1,4 +1,14 @@
 [data-theme="light"] {
+  /* Barra de titulo custom para ejecutable de windows */
+  --bg-titlebar-custom: #e8e3f5;      
+  --text-titlebar-custom: #2b1f6b;     
+  --border-bottom-titlebar: 1px solid #ab95ff;
+  --bg-btn-ctrl: #f1eff7;             
+  --border-btn-ctrl: 1px solid #7c5dfa;
+  --color-btn-ctrl: #7c5dfa;       
+  --shadow-btn-ctrl: rgba(124, 93, 250, 0.2);
+  --color-icons-ctrl: #4f3db4;
+  /* temas generales */
   --bg: #f4f2ff;
   --bg-secondary: #ede9ff;
   --card-bg: rgba(0,0,0,0.04);
@@ -32,6 +42,16 @@
 }
 
 [data-theme="dark"] {
+  /* Barra de titulo custom para ejecutable de windows */
+  --bg-titlebar-custom: #4f3db4;
+  --text-titlebar-custom: #fff;
+  --border-bottom-titlebar: 1px solid #a176ff;
+  --bg-btn-ctrl: #2a114d;
+  --border-btn-ctrl: 1px solid #a176ff;
+  --color-btn-ctrl: #a176ff;
+  --shadow-btn-ctrl: #a176ff;
+  --color-icons-ctrl: #1a0933;
+  /* temas generales */
   --bg: #08070f;
   --bg-secondary: #0e0c1a;
   --card-bg: rgba(255, 255, 255, 0.04);

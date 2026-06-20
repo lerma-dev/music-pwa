@@ -5,12 +5,13 @@ import { loadFromDatabase } from './modules/db/libraryDB.js';
 import { saveLibraryToDB, openDB, storeName } from './modules/db/database.js';
 import { initSidebar } from './modules/ui/sidebar.js';
 import { applyStoredTheme } from './modules/utils/theme.js';
+import { initPlatformCore } from './modules/core/index.js';
 
 // Aplicar tema guardado antes de pintar la UI
 applyStoredTheme();
 
 (async () => {
-    // 1. Inyectar HTML de todas las vistas
+    initPlatformCore();
     await loadViews();
 
     const { initPlayer, togglePlay, playNext, playPrev, mode } = await import('./modules/components/player.js');
