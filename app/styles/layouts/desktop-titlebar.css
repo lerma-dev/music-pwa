@@ -1,0 +1,113 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh !important;
+  width: 100vw !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* 🚀 Forzamos que si tiene la clase .custom, se muestre sí o sí ignorando el display inline */
+#desktop-titlebar.custom[style] {
+  display: flex !important; 
+}
+
+#desktop-titlebar {
+  flex-shrink: 0 !important;
+  height: 32px !important;
+  background: var(--bg-titlebar-custom);
+  color: var(--text-titlebar-custom);
+  border-bottom: var(--border-bottom-titlebar);
+  padding: 0 15px;
+  align-items: center;
+  -webkit-app-region: drag;
+  user-select: none;
+  z-index: 99999 !important; /* Prioridad máxima por encima de vistas fijas */
+  box-sizing: border-box;
+}
+
+.logo-titlebar {
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+}
+
+/* 🚀 Contenedor de la app estricto */
+#app {
+  flex-grow: 1 !important;
+  width: 100% !important;
+  height: calc(100vh - 32px) !important; /* Límite físico absoluto */
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  position: relative !important;
+  box-sizing: border-box;
+}
+
+/* 🚀 Asegurar que CUALQUIER vista hija directa inyectada no flote sobre la barra */
+#app > div, #app > section {
+  max-height: 100% !important;
+  box-sizing: border-box;
+}
+
+#app::-webkit-scrollbar {
+  width: 8px;
+}
+#app::-webkit-scrollbar-track {
+  background: #130626;
+}
+#app::-webkit-scrollbar-thumb {
+  background: #2a114d;
+  border-radius: 4px;
+}
+#app::-webkit-scrollbar-thumb:hover {
+  background: #a176ff;
+}
+
+/* controles */
+.window-controls {
+  display: flex;
+  align-items: center;
+}
+.ctrl-btn {
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all 0.15s ease;
+}
+.ctrl-btn l-icon {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* CUSTOM */
+#desktop-titlebar.custom .window-controls {
+  order: 1;
+  margin-left: auto;
+  gap: 6px;
+}
+#desktop-titlebar.custom .ctrl-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: var(--bg-btn-ctrl);
+  border: var(--border-btn-ctrl);
+  color: var(--color-button-controls);
+}
+#desktop-titlebar.custom .ctrl-btn:hover {
+  background: var(--accent-2);
+  box-shadow: 0 0 10px var(--shadow-btn-ctrl);
+}
+#desktop-titlebar.custom .ctrl-btn:hover l-icon {
+  color: var(--color-icons-ctrl);
+}
