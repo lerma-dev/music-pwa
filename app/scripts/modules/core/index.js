@@ -1,18 +1,19 @@
 // scripts/modules/core/index.js
-import { initTitlebar } from "./windows.core.js";
+import { initTitlebar, sincronizarFondoConCSharp} from "./windows.core.js";
 
 export function initPlatformCore() {
   // Inicializamos la barra de título de inmediato para que se dibuje el HTML
+  sincronizarFondoConCSharp();
   initTitlebar();
 
   const inicializarEscritorio = () => {
     if (window.chrome?.webview) {
-      console.log("🚀 Entorno de escritorio (WebView2 C#) detectado.");
+      console.log("Entorno de escritorio (WebView2 C#) detectado.");
       if (typeof window.modeDesktopActive === "function") {
         window.modeDesktopActive();
       }
     } else {
-      console.log("🌐 Corriendo en entorno web estándar (Navegador).");
+      console.log("Corriendo en entorno web estándar (Navegador).");
     }
   };
 
@@ -27,7 +28,7 @@ export function initPlatformCore() {
   if (window.chrome?.webview) {
     window.chrome.webview.addEventListener("message", (event) => {
       const datos = event.data;
-      console.log("📩 Mensaje recibido desde C#:", datos);
+      console.log("Mensaje recibido desde C#:", datos);
     });
   }
 }

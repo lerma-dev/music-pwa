@@ -1,6 +1,7 @@
 body {
   margin: 0;
-  padding: 0;
+  padding: 0px;
+  box-sizing: border-box;
   height: 100vh !important;
   width: 100vw !important;
   overflow: hidden !important;
@@ -10,7 +11,7 @@ body {
 
 /* 🚀 Forzamos que si tiene la clase .custom, se muestre sí o sí ignorando el display inline */
 #desktop-titlebar.custom[style] {
-  display: flex !important; 
+  display: flex !important;
 }
 
 #desktop-titlebar {
@@ -21,9 +22,8 @@ body {
   border-bottom: var(--border-bottom-titlebar);
   padding: 0 15px;
   align-items: center;
-  -webkit-app-region: drag;
   user-select: none;
-  z-index: 99999 !important; /* Prioridad máxima por encima de vistas fijas */
+  z-index: 99999 !important;
   box-sizing: border-box;
 }
 
@@ -45,7 +45,8 @@ body {
 }
 
 /* 🚀 Asegurar que CUALQUIER vista hija directa inyectada no flote sobre la barra */
-#app > div, #app > section {
+#app > div,
+#app > section {
   max-height: 100% !important;
   box-sizing: border-box;
 }
