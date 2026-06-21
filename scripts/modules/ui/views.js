@@ -94,15 +94,19 @@ if(songSearch){
 }
 
 
-// Resize: si se pasa a desktop ocultar el full player overlay
+// Resize: Controlar dinámicamente el intercambio entre Desktop y Móvil
 window.addEventListener('resize', () => {
+    const fp = document.getElementById('view-player-full');
+    const mini = document.querySelector('.mini-player');
+
     if (window.innerWidth >= 1024) {
-
-        const fp = document.getElementById('view-player-full');
         if (fp) fp.classList.remove('active');
-
-        const mini = document.querySelector('.mini-player');
         if (mini) mini.style.display = 'none';
         document.body.style.overflow = 'auto';
+    }
+    else {
+        if (fp && !fp.classList.contains('active')) {
+            if (mini) mini.style.display = 'block';
+        }
     }
 });

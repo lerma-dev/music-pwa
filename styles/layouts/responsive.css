@@ -6,7 +6,7 @@
 /* ── TABLET (768px+) ── */
 @media (min-width: 768px) {
   body {
-    max-width: 900px;
+    max-width: 1023px;
     margin: 0 auto;
     min-height: 100vh;
   }
@@ -158,6 +158,7 @@
   }
 }
 
+/* ── DESKTOP (1024px+) ── */
 @media (min-width: 1024px) {
   body {
     max-width: 100%;
@@ -328,7 +329,7 @@
 
   .sidebar-bottom {
     margin-top: auto;
-    display: flex;
+    display: none;
     gap: 8px;
     padding: 0 4px;
   }
@@ -663,6 +664,7 @@
   }
 }
 
+/* ── DESKTOP (1280px) ── */
 @media (min-width: 1280px) {
   #app {
     grid-template-columns: 280px 1fr 360px;
