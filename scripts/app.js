@@ -22,6 +22,8 @@ applyStoredTheme();
     await import("./modules/components/toast.js");
   const { initbannerUpdates } =
     await import("./modules/components/banner-updates.js");
+  const { initDesktopBanner } =
+    await import("./modules/components/banner-desktop.js");
   const { initSongContextMenu } =
     await import("./modules/ui/song-context-menu.js");
   const { initSettings } = await import("./modules/components/settings.js");
@@ -41,6 +43,7 @@ applyStoredTheme();
   eliminarToast();
   // Banner de actualizaciones
   initbannerUpdates();
+  initDesktopBanner();
   // Sidebar desktop
   initSidebar();
   // Cargar database
